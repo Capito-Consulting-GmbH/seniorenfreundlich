@@ -16,7 +16,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"kilocode.kilo-code"
+				"kilocode.kilo-code",
+				"databricks.neon-local-connect"
 			]
 		}
 	}

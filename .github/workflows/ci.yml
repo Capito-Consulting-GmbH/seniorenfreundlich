@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci?sslmode=require
+      CLERK_SECRET_KEY: sk_test_ci
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_ci
+      MOLLIE_API_KEY: test_ci
+      MOLLIE_WEBHOOK_URL: https://example.com/api/mollie/webhook
+      BREVO_API_KEY: xkeysib-ci
+      BLOB_READ_WRITE_TOKEN: vercel_blob_ci
+      SENTRY_DSN: https://public_key@o0.ingest.sentry.io/0
+      NEXT_PUBLIC_SENTRY_DSN: https://public_key@o0.ingest.sentry.io/0
+      NEXT_PUBLIC_APP_URL: https://example.com
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: G-0000000000
+      NEXT_PUBLIC_COOKIEBOT_ID: 00000000-0000-0000-0000-000000000000
+    defaults:
+      run:
+        working-directory: seniorenfreundlich
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: seniorenfreundlich/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
