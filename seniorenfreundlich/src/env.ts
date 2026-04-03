@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 const serverEnvSchema = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  // : z.enum(["development", "test", "production"]).default("development"),
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
   CLERK_SECRET_KEY: z.string().min(1, "CLERK_SECRET_KEY is required"),
   MOLLIE_API_KEY: z.string().min(1, "MOLLIE_API_KEY is required"),
-  MOLLIE_WEBHOOK_URL: z.string().url("MOLLIE_WEBHOOK_URL must be a valid URL"),
+  MOLLIE_WEBHOOK_URL: z.url("MOLLIE_WEBHOOK_URL must be a valid URL"),
   BREVO_API_KEY: z.string().min(1, "BREVO_API_KEY is required"),
   BLOB_READ_WRITE_TOKEN: z.string().min(1, "BLOB_READ_WRITE_TOKEN is required"),
-  SENTRY_DSN: z.string().url("SENTRY_DSN must be a valid URL"),
+  SENTRY_DSN: z.url("SENTRY_DSN must be a valid URL"),
 });
 
 const clientEnvSchema = z.object({
@@ -18,7 +18,7 @@ const clientEnvSchema = z.object({
     .min(1, "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is required"),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
   NEXT_PUBLIC_COOKIEBOT_ID: z.string().optional(),
-  NEXT_PUBLIC_SENTRY_DSN: z.string().url("NEXT_PUBLIC_SENTRY_DSN must be a valid URL"),
+  NEXT_PUBLIC_SENTRY_DSN: z.url("NEXT_PUBLIC_SENTRY_DSN must be a valid URL"),
 });
 
 const serverEnvResult = serverEnvSchema.safeParse(process.env);

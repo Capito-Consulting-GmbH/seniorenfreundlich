@@ -9,7 +9,6 @@
 	},
 	// Environment for better I/O performance
 	"remoteEnv": {
-		"NODE_ENV": "development",
 		"npm_config_loglevel": "warn",
 		"npm_config_progress": "false"
 	},

@@ -11,7 +11,6 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
       DATABASE_URL: postgresql://ci:ci@localhost:5432/ci?sslmode=require
       CLERK_SECRET_KEY: sk_test_ci
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_ci
