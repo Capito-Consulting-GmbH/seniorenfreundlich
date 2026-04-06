@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { AuthHeader } from "@/app/auth-header";
+import { AuthHeader } from "@/src/app/auth-header";
 
 export default function Home() {
   return (
