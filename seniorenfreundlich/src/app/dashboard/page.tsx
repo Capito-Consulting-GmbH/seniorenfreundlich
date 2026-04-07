@@ -1,17 +1,11 @@
+import { redirect } from "next/navigation";
 import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
 
 export default async function DashboardPage() {
   const company = await getCurrentCompany();
 
   if (!company) {
-    return (
-      <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Willkommen</h1>
-        <p className="mt-2 text-zinc-600">
-          Noch kein Unternehmensprofil vorhanden. Das Onboarding folgt in Kürze.
-        </p>
-      </div>
-    );
+    redirect("/dashboard/onboarding");
   }
 
   return (

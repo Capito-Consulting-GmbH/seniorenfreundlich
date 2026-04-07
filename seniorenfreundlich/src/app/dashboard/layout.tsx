@@ -1,3 +1,5 @@
+import { DashboardUserNav } from "./UserNav";
+
 export default function DashboardLayout({
   children,
 }: {
@@ -12,6 +14,9 @@ export default function DashboardLayout({
           <a href="/dashboard/profile" className="text-sm text-zinc-600 hover:text-zinc-900">Profil</a>
           <a href="/dashboard/billing" className="text-sm text-zinc-600 hover:text-zinc-900">Abrechnung</a>
           <a href="/dashboard/badge" className="text-sm text-zinc-600 hover:text-zinc-900">Siegel</a>
+          <div className="ml-auto">
+            <DashboardUserNav />
+          </div>
         </div>
       </nav>
       <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
