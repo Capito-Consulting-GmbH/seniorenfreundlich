@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "@/src/db/db";
 import { badges } from "@/src/db/schema";
 
@@ -39,4 +39,16 @@ export async function revokeBadge(id: string): Promise<Badge> {
     .where(eq(badges.id, id))
     .returning();
   return badge;
+}
+
+export async function getLatestBadgeForCompany(
+  companyId: string
+): Promise<Badge | null> {
+  const result = await db
+    .select()
+    .from(badges)
+    .where(eq(badges.companyId, companyId))
+    .orderBy(desc(badges.issuedAt))
+    .limit(1);
+  return result[0] ?? null;
 }

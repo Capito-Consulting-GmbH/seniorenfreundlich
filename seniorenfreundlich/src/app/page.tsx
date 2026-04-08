@@ -16,7 +16,7 @@ export default function Home() {
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
           <HeroCta />
           <a
-            href="/unternehmen"
+            href="/companies"
             className="rounded-full border border-zinc-300 px-8 py-3 text-sm font-semibold text-zinc-700 hover:border-zinc-500"
           >
             Zertifizierte Unternehmen

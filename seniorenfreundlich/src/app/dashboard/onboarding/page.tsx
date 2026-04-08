@@ -67,7 +67,7 @@ export default function OnboardingPage() {
           </label>
           <div className="mt-1 flex rounded-md shadow-sm">
             <span className="inline-flex items-center rounded-l-md border border-r-0 border-zinc-300 bg-zinc-50 px-3 text-sm text-zinc-500">
-              seniorenfreundlich.de/unternehmen/
+              seniorenfreundlich.de/companies/
             </span>
             <input
               id="slug"

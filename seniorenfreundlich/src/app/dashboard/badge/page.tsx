@@ -30,10 +30,10 @@ export default async function BadgePage() {
 
           <p className="mt-4 text-sm text-zinc-500">Zertifikat</p>
           <a
-            href={`/zertifikat/${company.slug}`}
+            href={`/certificate/${company.slug}`}
             className="text-sm text-zinc-900 underline hover:text-zinc-700"
           >
-            /zertifikat/{company.slug}
+            /certificate/{company.slug}
           </a>
 
           <RevokeBadgeForm />

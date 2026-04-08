@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { and, count, eq, ilike, or } from "drizzle-orm";
 import { db } from "@/src/db/db";
-import { companies } from "@/src/db/schema";
+import { badges, companies } from "@/src/db/schema";
 
 export type Company = typeof companies.$inferSelect;
 export type NewCompany = typeof companies.$inferInsert;
@@ -42,4 +42,43 @@ export async function updateCompany(
     .where(eq(companies.id, id))
     .returning();
   return company;
+}
+
+const PAGE_SIZE = 12;
+
+export async function listCertifiedCompanies({
+  search,
+  page,
+}: {
+  search?: string;
+  page: number;
+}): Promise<{ rows: Company[]; total: number; pageSize: number }> {
+  const offset = (page - 1) * PAGE_SIZE;
+
+  const searchFilter =
+    search
+      ? or(
+          ilike(companies.name, `%${search}%`),
+          ilike(companies.city, `%${search}%`)
+        )
+      : undefined;
+
+  const whereClause = and(eq(badges.status, "active"), searchFilter);
+
+  const [{ total }] = await db
+    .select({ total: count() })
+    .from(companies)
+    .innerJoin(badges, eq(badges.companyId, companies.id))
+    .where(whereClause);
+
+  const rows = await db
+    .select({ company: companies })
+    .from(companies)
+    .innerJoin(badges, eq(badges.companyId, companies.id))
+    .where(whereClause)
+    .orderBy(companies.name)
+    .limit(PAGE_SIZE)
+    .offset(offset);
+
+  return { rows: rows.map((r) => r.company), total, pageSize: PAGE_SIZE };
 }

@@ -33,8 +33,8 @@ export async function revokeBadgeAction(): Promise<RevokeBadgeState> {
   });
 
   revalidatePath("/dashboard/badge");
-  revalidatePath(`/zertifikat/${company.slug}`);
-  revalidatePath(`/unternehmen/${company.slug}`);
+  revalidatePath(`/certificate/${company.slug}`);
+  revalidatePath(`/companies/${company.slug}`);
 
   return { success: true };
 }

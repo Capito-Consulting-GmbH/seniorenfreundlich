@@ -2,6 +2,7 @@
 
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/nextjs";
+import { WordMark } from "@/src/components/WordMark";
 
 export function AuthHeader() {
   const { isSignedIn } = useAuth();
@@ -9,10 +10,8 @@ export function AuthHeader() {
   return (
     <header className="flex w-full items-center justify-between gap-3 border-b border-zinc-200 bg-white px-6 py-4">
       <div className="flex items-center gap-6">
-        <a href="/" className="text-sm font-semibold text-zinc-900">
-          Seniorenfreundlich.de
-        </a>
-        <a href="/unternehmen" className="text-sm text-zinc-600 hover:text-zinc-900">
+        <WordMark />
+        <a href="/companies" className="text-sm text-zinc-600 hover:text-zinc-900">
           Unternehmen
         </a>
         {isSignedIn && (

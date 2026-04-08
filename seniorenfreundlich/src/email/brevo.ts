@@ -22,7 +22,7 @@ export async function sendBadgeIssuedEmail({
   companyName,
   companySlug,
 }: BadgeIssuedEmailArgs): Promise<void> {
-  const certificateUrl = `${env.NEXT_PUBLIC_APP_URL}/zertifikat/${companySlug}`;
+  const certificateUrl = `${env.NEXT_PUBLIC_APP_URL}/certificate/${companySlug}`;
   const dashboardUrl = `${env.NEXT_PUBLIC_APP_URL}/dashboard/badge`;
 
   try {
