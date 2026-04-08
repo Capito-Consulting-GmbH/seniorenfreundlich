@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from "@/src/db/db";
 import { orders } from "@/src/db/schema";
 
@@ -32,4 +32,15 @@ export async function markOrderPaid(id: string): Promise<Order> {
 
 export async function getOrdersByCompany(companyId: string): Promise<Order[]> {
   return db.select().from(orders).where(eq(orders.companyId, companyId));
+}
+
+export async function getLatestOrderByCompany(companyId: string): Promise<Order | null> {
+  const result = await db
+    .select()
+    .from(orders)
+    .where(eq(orders.companyId, companyId))
+    .orderBy(desc(orders.createdAt))
+    .limit(1);
+
+  return result[0] ?? null;
 }

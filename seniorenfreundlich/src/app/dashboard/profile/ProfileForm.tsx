@@ -45,8 +45,8 @@ export default function ProfileForm({ company }: { company: Company }) {
           <Field
             label="Website"
             name="website"
-            type="url"
-            placeholder="https://example.de"
+            type="text"
+            placeholder="www.example.de"
             defaultValue={company.website ?? ""}
             error={state.errors?.website}
           />
