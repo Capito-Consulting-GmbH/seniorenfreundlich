@@ -24,7 +24,13 @@ export default function Home() {
         </div>
       </main>
       <footer className="border-t border-zinc-200 px-6 py-6 text-center text-xs text-zinc-400">
-        © {new Date().getFullYear()} Seniorenfreundlich.de
+        <p>© {new Date().getFullYear()} Seniorenfreundlich.de</p>
+        <nav className="mt-2 flex justify-center gap-4">
+          <a href="/imprint" className="hover:text-zinc-600">Impressum</a>
+          <a href="/privacy" className="hover:text-zinc-600">Datenschutz</a>
+          <a href="/terms" className="hover:text-zinc-600">AGB</a>
+          <a href="/cancellation" className="hover:text-zinc-600">Widerruf</a>
+        </nav>
       </footer>
     </div>
   );
