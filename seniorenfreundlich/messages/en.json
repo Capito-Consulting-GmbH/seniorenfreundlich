@@ -201,7 +201,7 @@
       "assertionId": "Assertion ID",
       "certificate": "Certificate",
       "viewCertificate": "View certificate →",
-      "revokeConfirm": "Really revoke the seal?",
+      "revokeConfirm": "Revoke this seal?",
       "revokeConfirmDesc": "This action cannot be undone. The seal will be immediately withdrawn and will appear publicly as revoked.",
       "revokeCancel": "Cancel",
       "revokeButton": "Revoke Seal",

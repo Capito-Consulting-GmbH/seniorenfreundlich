@@ -139,11 +139,11 @@
       "billingTitle": "Abrechnung",
       "billingDesc": "Siegel kaufen & Zahlungen",
       "badgeTitle": "Siegel",
-      "badgeDesc": "Badge verwalten & einbetten"
+      "badgeDesc": "Siegel verwalten & einbetten"
     },
     "onboarding": {
       "title": "Unternehmen anlegen",
-      "subtitle": "Erstelle dein Unternehmensprofil, um das Seniorenfreundlich-Siegel zu beantragen.",
+      "subtitle": "Erstellen Sie Ihr Unternehmensprofil, um das Seniorenfreundlich-Siegel zu beantragen.",
       "labelName": "Unternehmensname",
       "labelSlug": "Slug (URL-Kennung)",
       "slugPrefix": "seniorenfreundlich.de/companies/",
@@ -153,7 +153,7 @@
     },
     "profile": {
       "title": "Unternehmensprofil",
-      "subtitle": "Diese Angaben erscheinen auf deiner öffentlichen Unternehmensseite.",
+      "subtitle": "Diese Angaben erscheinen auf Ihrer öffentlichen Unternehmensseite.",
       "dbError": "Datenbank aktuell nicht erreichbar. Bitte Seite in 10–20 Sekunden neu laden.",
       "saved": "Profil gespeichert.",
       "labelName": "Unternehmensname",
@@ -202,7 +202,7 @@
       "certificate": "Zertifikat",
       "viewCertificate": "Zertifikat ansehen →",
       "revokeConfirm": "Siegel wirklich entwerten?",
-      "revokeConfirmDesc": "Diese Aktion kann nicht rükgängig gemacht werden. Das Siegel wird sofort entzogen und erscheint öffentlich als widerrufen.",
+      "revokeConfirmDesc": "Diese Aktion kann nicht rückgängig gemacht werden. Das Siegel wird sofort entzogen und erscheint öffentlich als widerrufen.",
       "revokeCancel": "Abbrechen",
       "revokeButton": "Siegel entwerten",
       "revoking": "Wird entwertet…",
