@@ -54,7 +54,7 @@ export default function OnboardingPage() {
                 setSlug(slugify(nextName));
               }
             }}
-            className="mt-1 block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+            className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
           />
           {state.errors?.name && (
             <p className="mt-1 text-xs text-red-600">{state.errors.name.join(", ")}</p>
@@ -87,7 +87,7 @@ export default function OnboardingPage() {
                   setSlug((prev) => slugify(`${prev}-`));
                 }
               }}
-              className="block w-full rounded-r-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+              className="block w-full rounded-r-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
           </div>
           <p className="mt-1 text-xs text-zinc-500">{t("slugHint")}</p>
