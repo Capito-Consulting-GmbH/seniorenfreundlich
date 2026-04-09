@@ -1,0 +1,1 @@
+This document will provide the definitions and standards we are adhering to (either via link or via copy pasting here), and the resulting criteria. It will also include all questions we ask the company during the assessment, and it will include all steps and documents where the customer (the company) has to upload/provide files.

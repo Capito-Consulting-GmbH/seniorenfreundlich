@@ -1,12 +1,16 @@
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/src/i18n/navigation";
 import { AuthHeader } from "@/src/app/auth-header";
 
-export function LegalShell({
+export async function LegalShell({
   title,
   children,
 }: {
   title: string;
   children: React.ReactNode;
 }) {
+  const tFooter = await getTranslations("footer");
+
   return (
     <div className="min-h-screen bg-white">
       <AuthHeader />
@@ -15,7 +19,13 @@ export function LegalShell({
         <div className="prose prose-zinc mt-8 max-w-none">{children}</div>
       </main>
       <footer className="mt-16 border-t border-zinc-200 px-6 py-6 text-center text-xs text-zinc-400">
-        © {new Date().getFullYear()} Seniorenfreundlich.de
+        <p>© {new Date().getFullYear()} Seniorenfreundlich.de</p>
+        <nav className="mt-2 flex justify-center gap-4">
+          <Link href="/imprint" className="hover:text-zinc-600">{tFooter("imprint")}</Link>
+          <Link href="/privacy" className="hover:text-zinc-600">{tFooter("privacy")}</Link>
+          <Link href="/terms" className="hover:text-zinc-600">{tFooter("terms")}</Link>
+          <Link href="/cancellation" className="hover:text-zinc-600">{tFooter("cancellation")}</Link>
+        </nav>
       </footer>
     </div>
   );

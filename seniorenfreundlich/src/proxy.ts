@@ -1,12 +1,38 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import createMiddleware from 'next-intl/middleware'
+import { routing } from './i18n/routing'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
-export default clerkMiddleware()
+const intlMiddleware = createMiddleware(routing)
+
+const isProtectedRoute = createRouteMatcher([
+  '/dashboard(.*)',
+  '/en/dashboard(.*)',
+])
+
+export default clerkMiddleware(async (auth, req: NextRequest) => {
+  const { pathname } = req.nextUrl
+
+  if (pathname === '/monitoring') {
+    return NextResponse.next()
+  }
+
+  if (pathname === '/en/monitoring' || pathname === '/de/monitoring') {
+    const url = req.nextUrl.clone()
+    url.pathname = '/monitoring'
+    return NextResponse.rewrite(url)
+  }
+
+  if (isProtectedRoute(req)) {
+    await auth.protect()
+  }
+  return intlMiddleware(req)
+})
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
+    '/((?!_next|monitoring|(?:en|de)/monitoring|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     '/(api|trpc)(.*)',
   ],
 }
