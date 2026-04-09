@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/src/i18n/navigation";
 import { WordMark } from "@/src/components/WordMark";
+import { LocaleSwitcher } from "@/src/components/LocaleSwitcher";
 import { DashboardUserNav } from "./UserNav";
 
 type Props = {
@@ -34,6 +35,7 @@ export default async function DashboardLayout({ children, params }: Props) {
             <Link href="/companies" className="whitespace-nowrap text-sm text-zinc-500 hover:text-zinc-900">
               {t("directory")}
             </Link>
+            <LocaleSwitcher />
             <DashboardUserNav />
           </div>
         </div>

@@ -3,7 +3,10 @@
     "companies": "Unternehmen",
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
-    "signUp": "Registrieren"
+    "signUp": "Registrieren",
+    "languageLabel": "Sprache",
+    "langDe": "DE",
+    "langEn": "EN"
   },
   "footer": {
     "imprint": "Impressum",
@@ -198,7 +201,9 @@
       "assertionId": "Assertion ID",
       "certificate": "Zertifikat",
       "viewCertificate": "Zertifikat ansehen →",
-      "revokeConfirm": "Siegel wirklich entwerten? Diese Aktion ist nicht rückgängig.",
+      "revokeConfirm": "Siegel wirklich entwerten?",
+      "revokeConfirmDesc": "Diese Aktion kann nicht rükgängig gemacht werden. Das Siegel wird sofort entzogen und erscheint öffentlich als widerrufen.",
+      "revokeCancel": "Abbrechen",
       "revokeButton": "Siegel entwerten",
       "revoking": "Wird entwertet…",
       "revokeSuccess": "Siegel wurde entwertet."

@@ -5,6 +5,7 @@ import { Show, SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/ne
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
 import { WordMark } from "@/src/components/WordMark";
+import { LocaleSwitcher } from "@/src/components/LocaleSwitcher";
 
 export function AuthHeader() {
   const { isSignedIn } = useAuth();
@@ -30,6 +31,10 @@ export function AuthHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <div className="hidden sm:block">
+            <LocaleSwitcher />
+          </div>
+
           {/* Auth buttons — desktop only */}
           <Show when="signed-out">
             <SignInButton forceRedirectUrl="/dashboard">
@@ -83,6 +88,11 @@ export function AuthHeader() {
               {t("dashboard")}
             </Link>
           )}
+
+          <div className="sm:hidden">
+            <LocaleSwitcher onLocaleChange={() => setMobileOpen(false)} />
+          </div>
+
           <Show when="signed-out">
             <SignInButton forceRedirectUrl="/dashboard">
               <button className="w-full rounded-full border border-zinc-300 px-4 py-1.5 text-sm font-medium text-zinc-700 hover:border-zinc-500">

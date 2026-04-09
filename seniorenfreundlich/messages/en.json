@@ -3,7 +3,10 @@
     "companies": "Companies",
     "dashboard": "Dashboard",
     "signIn": "Sign in",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "languageLabel": "Language",
+    "langDe": "DE",
+    "langEn": "EN"
   },
   "footer": {
     "imprint": "Imprint",
@@ -198,7 +201,9 @@
       "assertionId": "Assertion ID",
       "certificate": "Certificate",
       "viewCertificate": "View certificate →",
-      "revokeConfirm": "Really revoke the seal? This action cannot be undone.",
+      "revokeConfirm": "Really revoke the seal?",
+      "revokeConfirmDesc": "This action cannot be undone. The seal will be immediately withdrawn and will appear publicly as revoked.",
+      "revokeCancel": "Cancel",
       "revokeButton": "Revoke Seal",
       "revoking": "Revoking…",
       "revokeSuccess": "Seal has been revoked."
