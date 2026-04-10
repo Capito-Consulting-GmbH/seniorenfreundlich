@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
 import ProfileForm from "./ProfileForm";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 export default async function ProfilePage() {
   const t = await getTranslations("dashboard.profile");
@@ -12,10 +13,10 @@ export default async function ProfilePage() {
   } catch {
     return (
       <div className="max-w-2xl">
-        <h1 className="text-2xl font-semibold text-zinc-900">{t("title")}</h1>
-        <p className="mt-3 rounded-md bg-amber-50 p-3 text-sm text-amber-800">
-          {t("dbError")}
-        </p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("title")}</h1>
+        <Alert className="mt-3">
+          <AlertDescription>{t("dbError")}</AlertDescription>
+        </Alert>
       </div>
     );
   }
@@ -26,8 +27,8 @@ export default async function ProfilePage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-semibold text-zinc-900">{t("title")}</h1>
-      <p className="mt-2 text-zinc-600">{t("subtitle")}</p>
+      <h1 className="text-2xl font-semibold text-foreground">{t("title")}</h1>
+      <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
       <ProfileForm company={company} />
     </div>
   );

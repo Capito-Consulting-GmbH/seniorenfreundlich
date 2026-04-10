@@ -8,7 +8,7 @@ export default function LogoUpload({ logoUrl }: { logoUrl: string | null }) {
 
   return (
     <div>
-      <p className="text-sm font-medium text-zinc-700">{t("logo")}</p>
+      <p className="text-sm font-medium text-foreground">{t("logo")}</p>
       <div className="mt-2 flex items-center gap-6">
         {logoUrl ? (
           <Image
@@ -20,7 +20,7 @@ export default function LogoUpload({ logoUrl }: { logoUrl: string | null }) {
             className="rounded-md object-contain"
           />
         ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-dashed border-zinc-300 bg-zinc-50 text-xs text-zinc-400">
+          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-dashed border-border bg-muted text-xs text-muted-foreground">
             {t("logoNone")}
           </div>
         )}
@@ -29,9 +29,9 @@ export default function LogoUpload({ logoUrl }: { logoUrl: string | null }) {
             type="file"
             name="logo"
             accept="image/jpeg,image/png,image/webp,image/svg+xml"
-            className="text-sm text-zinc-700 file:mr-3 file:rounded-md file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm file:font-medium file:text-zinc-700 hover:file:bg-zinc-200"
+            className="text-sm text-foreground file:mr-3 file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1 file:text-sm file:font-medium file:text-foreground hover:file:bg-accent"
           />
-          <p className="text-xs text-zinc-500">{t("logoHint")}</p>
+          <p className="text-xs text-muted-foreground">{t("logoHint")}</p>
         </div>
       </div>
     </div>

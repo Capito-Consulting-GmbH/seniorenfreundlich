@@ -4,7 +4,7 @@ export function WordMark() {
   return (
     <Link
       href="/"
-      className="text-sm font-semibold text-zinc-900 hover:text-zinc-600"
+      className="text-sm font-semibold text-foreground hover:text-muted-foreground transition-colors"
     >
       Seniorenfreundlich.de
     </Link>

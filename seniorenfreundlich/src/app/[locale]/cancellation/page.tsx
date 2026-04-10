@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LegalShell } from "@/src/components/LegalShell";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -17,9 +18,9 @@ export default async function CancellationPage({ params }: Props) {
 
   return (
     <LegalShell title={t("title")}>
-      <p className="rounded bg-amber-50 p-3 text-sm text-amber-700">
-        {t("pending")}
-      </p>
+      <Alert className="mb-6">
+        <AlertDescription>{t("pending")}</AlertDescription>
+      </Alert>
 
       <h2>{t("h_right")}</h2>
       <p>{t("p_right1")}</p>

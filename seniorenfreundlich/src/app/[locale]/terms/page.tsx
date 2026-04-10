@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LegalShell } from "@/src/components/LegalShell";
 import { Link } from "@/src/i18n/navigation";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -18,9 +19,9 @@ export default async function TermsPage({ params }: Props) {
 
   return (
     <LegalShell title={t("title")}>
-      <p className="rounded bg-amber-50 p-3 text-sm text-amber-700">
-        {t("pending")}
-      </p>
+      <Alert className="mb-6">
+        <AlertDescription>{t("pending")}</AlertDescription>
+      </Alert>
 
       <h2>{t("s1h")}</h2>
       <p>{t("s1p")}</p>

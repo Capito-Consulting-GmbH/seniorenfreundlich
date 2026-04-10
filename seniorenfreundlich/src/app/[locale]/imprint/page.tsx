@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LegalShell } from "@/src/components/LegalShell";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -17,9 +18,9 @@ export default async function ImprintPage({ params }: Props) {
 
   return (
     <LegalShell title={t("title")}>
-      <p className="text-sm text-amber-700 bg-amber-50 rounded p-3 mb-6">
-        {t("pending")}
-      </p>
+      <Alert className="mb-6">
+        <AlertDescription>{t("pending")}</AlertDescription>
+      </Alert>
 
       <h2>{t("h_legalInfo")}</h2>
       <p className="whitespace-pre-line">{t("p_address")}</p>

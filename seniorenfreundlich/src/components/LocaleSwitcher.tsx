@@ -2,51 +2,66 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "@/src/i18n/navigation";
+import { Button } from "@/src/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/src/components/ui/dropdown-menu";
+import { Check } from "lucide-react";
 
 type Props = {
   onLocaleChange?: () => void;
 };
 
-const locales = ["de", "en"] as const;
+const locales = [
+  { code: "de", flag: "🇩🇪", label: "Deutsch" },
+  { code: "en", flag: "🇬🇧", label: "English" },
+] as const;
+
+function navigate(nextLocale: string, pathname: string, onLocaleChange?: () => void) {
+  onLocaleChange?.();
+  document.cookie = `NEXT_LOCALE=${nextLocale};path=/;max-age=31536000;SameSite=Lax`;
+  const prefix = nextLocale === "en" ? "/en" : "";
+  const target = (prefix + (pathname === "/" ? "" : pathname)) || "/";
+  window.location.href = target + window.location.search;
+}
 
 export function LocaleSwitcher({ onLocaleChange }: Props) {
   const locale = useLocale();
-  const pathname = usePathname(); // locale-stripped by next-intl
+  const pathname = usePathname();
   const t = useTranslations("nav");
+  const current = locales.find((l) => l.code === locale) ?? locales[0];
 
   return (
-    <div
-      className="inline-flex items-center rounded-full border border-zinc-300 bg-white p-0.5"
-      role="group"
-      aria-label={t("languageLabel")}
-    >
-      {locales.map((nextLocale) => {
-        const isActive = locale === nextLocale;
-        return (
-          <button
-            key={nextLocale}
-            type="button"
-            onClick={() => {
-              if (isActive) return;
-              onLocaleChange?.();
-              // Hard-navigate to flush the RootLayout (NextIntlClientProvider).
-              // Set NEXT_LOCALE cookie first so middleware won't redirect back.
-              document.cookie = `NEXT_LOCALE=${nextLocale};path=/;max-age=31536000;SameSite=Lax`;
-              const prefix = nextLocale === "en" ? "/en" : "";
-              const target = (prefix + (pathname === "/" ? "" : pathname)) || "/";
-              window.location.href = target + window.location.search;
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1.5 px-2 text-sm"
+          aria-label={t("languageLabel")}
+        >
+          <span aria-hidden="true">{current.flag}</span>
+          <span className="hidden sm:inline">{current.label}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[140px]">
+        {locales.map(({ code, flag, label }) => (
+          <DropdownMenuItem
+            key={code}
+            onSelect={() => {
+              if (code !== locale) navigate(code, pathname, onLocaleChange);
             }}
-            aria-pressed={isActive}
-            className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wide transition ${
-              isActive
-                ? "bg-zinc-900 text-white"
-                : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-            }`}
+            className="gap-2"
           >
-            {nextLocale === "de" ? t("langDe") : t("langEn")}
-          </button>
-        );
-      })}
-    </div>
+            <span aria-hidden="true">{flag}</span>
+            {label}
+            {code === locale && <Check className="ml-auto h-4 w-4" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
