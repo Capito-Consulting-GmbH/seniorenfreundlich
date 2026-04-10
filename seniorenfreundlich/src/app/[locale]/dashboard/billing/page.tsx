@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
+
+export const dynamic = "force-dynamic";
 import { getActiveBadgeForCompany } from "@/src/services/badgeService";
+import { getLatestOrderByCompany } from "@/src/services/orderService";
+import { mollieClient } from "@/src/mollie/mollie";
 import { startCheckoutAction } from "@/src/actions/startCheckout";
 import PaymentPoller from "./PaymentPoller";
 import { Card, CardContent } from "@/src/components/ui/card";
@@ -33,6 +37,30 @@ export default async function BillingPage({
     );
   }
 
+  // Always check for an in-progress payment, regardless of URL params.
+  // This ensures the poller survives reloads and direct navigation to the page.
+  // We consult Mollie directly so we can distinguish:
+  //   "open"     = user navigated away / clicked Previous page without paying → no spinner
+  //   "canceled" = user explicitly canceled → no spinner
+  //   anything else (paid, authorized, …) = payment in flight → show spinner
+  let showPaymentPoller = false;
+  const latestOrder = await getLatestOrderByCompany(company.id);
+  if (latestOrder?.status === "paid") {
+    redirect("/dashboard/badge");
+  } else if (latestOrder?.status === "pending" && latestOrder.molliePaymentId !== null) {
+    try {
+      const molliePayment = await mollieClient.payments.get(
+        latestOrder.molliePaymentId
+      );
+      showPaymentPoller =
+        molliePayment.status !== "open" &&
+        molliePayment.status !== "canceled";
+    } catch {
+      // Mollie API unreachable – show the poller as a safe fallback
+      showPaymentPoller = true;
+    }
+  }
+
   const activeBadge = await getActiveBadgeForCompany(company.id);
 
   return (
@@ -40,7 +68,7 @@ export default async function BillingPage({
       <h1 className="text-2xl font-semibold text-foreground">{t("title")}</h1>
       <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
 
-      {params.checkout === "returned" && <PaymentPoller />}
+      {showPaymentPoller && <PaymentPoller />}
 
       {params.error === "badge-active" && (
         <Alert className="mt-4">
@@ -66,7 +94,9 @@ export default async function BillingPage({
             </Alert>
           ) : (
             <form action={startCheckoutAction} className="mt-6">
-              <Button type="submit">{t("buy")}</Button>
+              <Button type="submit" disabled={showPaymentPoller}>
+                {t("buy")}
+              </Button>
             </form>
           )}
         </CardContent>

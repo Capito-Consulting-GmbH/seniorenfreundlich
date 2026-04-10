@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { AuthHeader } from "@/src/app/auth-header";
 import { Link } from "@/src/i18n/navigation";
 import { getCompanyBySlug } from "@/src/services/companyService";
@@ -57,9 +58,11 @@ export default async function CertificatePage({ params }: Props) {
                 </h1>
               </div>
               {company.logoUrl && (
-                <img
+                <Image
                   src={company.logoUrl}
                   alt={`${company.name} Logo`}
+                  width={112}
+                  height={56}
                   className="h-14 w-auto object-contain"
                 />
               )}
@@ -81,8 +84,11 @@ export default async function CertificatePage({ params }: Props) {
             {/* Status */}
             <div className="mt-6">
               {isActive ? (
-                <Badge variant="secondary" className="gap-2 rounded-full px-4 py-1.5">
-                  <span className="h-2 w-2 rounded-full bg-foreground/40" />
+                <Badge className="gap-2 rounded-full px-4 py-1.5 border border-green-200 bg-green-100 text-green-800 hover:bg-green-100">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                  </span>
                   {t("statusActive")}
                 </Badge>
               ) : (

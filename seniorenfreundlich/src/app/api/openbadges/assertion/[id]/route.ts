@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getBadgeByAssertionId } from "@/src/services/badgeService";
-import { getCompanyBySlug } from "@/src/services/companyService";
 import { eq } from "drizzle-orm";
 import { db } from "@/src/db/db";
 import { companies } from "@/src/db/schema";

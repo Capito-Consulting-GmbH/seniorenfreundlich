@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
 import { Button } from "@/src/components/ui/button";
 import { Alert, AlertDescription } from "@/src/components/ui/alert";
-import { CheckCircle, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 export default async function BadgePage() {
   const t = await getTranslations("dashboard.badge");
@@ -38,9 +38,12 @@ export default async function BadgePage() {
           <CardContent className="p-6">
             <div className="flex items-center gap-2">
               <p className="text-sm text-muted-foreground">{t("status")}</p>
-              <Badge variant="secondary" className="gap-1">
-                <CheckCircle className="h-3 w-3" />
-                {t("statusActive")}
+              <Badge className="gap-2 rounded-full border border-green-200 bg-green-100 text-green-800 hover:bg-green-100">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                  </span>
+                  {t("statusActive")}
               </Badge>
             </div>
 
@@ -48,12 +51,14 @@ export default async function BadgePage() {
             <p className="font-mono text-xs text-foreground break-all">{badge.assertionId}</p>
 
             <p className="mt-6 text-sm text-muted-foreground">{t("certificate")}</p>
-            <Button variant="outline" className="mt-2 gap-2" asChild>
-              <Link href={`/certificate/${company.slug}`} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="h-4 w-4" />
-                {t("viewCertificate")}
-              </Link>
-            </Button>
+            <div className="mt-2">
+              <Button variant="outline" className="gap-2" asChild>
+                <Link href={`/certificate/${company.slug}`} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4" />
+                  {t("viewCertificate")}
+                </Link>
+              </Button>
+            </div>
 
             <RevokeBadgeForm />
           </CardContent>

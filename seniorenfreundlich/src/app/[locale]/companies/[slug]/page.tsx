@@ -5,7 +5,7 @@ import { AuthHeader } from "@/src/app/auth-header";
 import { Link } from "@/src/i18n/navigation";
 import { getCompanyBySlug } from "@/src/services/companyService";
 import { getActiveBadgeForCompany } from "@/src/services/badgeService";
-import { Badge } from "@/src/components/ui/badge";
+import Image from "next/image";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
 import { Separator } from "@/src/components/ui/separator";
@@ -43,9 +43,11 @@ export default async function CompanyProfilePage({ params }: Props) {
         {/* Header */}
         <div className="flex items-start gap-5">
           {company.logoUrl ? (
-            <img
+            <Image
               src={company.logoUrl}
               alt={`${company.name} Logo`}
+              width={128}
+              height={64}
               className="h-16 w-auto object-contain"
             />
           ) : (

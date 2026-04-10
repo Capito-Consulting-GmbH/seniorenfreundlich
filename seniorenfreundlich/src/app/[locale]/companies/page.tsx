@@ -5,6 +5,7 @@ import { Link } from "@/src/i18n/navigation";
 import { listCertifiedCompanies } from "@/src/services/companyService";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
+import Image from "next/image";
 import { Badge } from "@/src/components/ui/badge";
 import { Card, CardContent } from "@/src/components/ui/card";
 
@@ -74,9 +75,11 @@ export default async function CompaniesPage({ params, searchParams }: Props) {
                 <Card className="h-full transition-shadow hover:shadow-md">
                   <CardContent className="p-5">
                     {company.logoUrl ? (
-                      <img
+                      <Image
                         src={company.logoUrl}
                         alt={`${company.name} Logo`}
+                        width={80}
+                        height={40}
                         className="mb-3 h-10 w-auto object-contain"
                       />
                     ) : (

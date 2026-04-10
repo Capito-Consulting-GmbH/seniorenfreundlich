@@ -24,6 +24,12 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
     return NextResponse.rewrite(url)
   }
 
+  // API routes must not be passed through intlMiddleware — it would prefix them
+  // with a locale (e.g. /en/api/...) producing 404s since no such route exists.
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next()
+  }
+
   if (isProtectedRoute(req)) {
     await auth.protect()
   }
