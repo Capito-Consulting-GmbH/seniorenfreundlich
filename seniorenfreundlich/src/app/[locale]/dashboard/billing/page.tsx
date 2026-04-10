@@ -4,6 +4,9 @@ import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
 import { getActiveBadgeForCompany } from "@/src/services/badgeService";
 import { startCheckoutAction } from "@/src/actions/startCheckout";
 import PaymentPoller from "./PaymentPoller";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Button } from "@/src/components/ui/button";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 export default async function BillingPage({
   searchParams,
@@ -24,8 +27,8 @@ export default async function BillingPage({
   if (!company) {
     return (
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">{t("title")}</h1>
-        <p className="mt-2 text-zinc-600">{t("noOnboarding")}</p>
+        <h1 className="text-2xl font-semibold text-foreground">{t("title")}</h1>
+        <p className="mt-2 text-muted-foreground">{t("noOnboarding")}</p>
       </div>
     );
   }
@@ -34,43 +37,40 @@ export default async function BillingPage({
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-semibold text-zinc-900">{t("title")}</h1>
-      <p className="mt-2 text-zinc-600">{t("subtitle")}</p>
+      <h1 className="text-2xl font-semibold text-foreground">{t("title")}</h1>
+      <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
 
       {params.checkout === "returned" && <PaymentPoller />}
 
       {params.error === "badge-active" && (
-        <p className="mt-4 rounded-md bg-amber-50 p-3 text-sm text-amber-800">
-          {t("badgeAlready")}
-        </p>
+        <Alert className="mt-4">
+          <AlertDescription>{t("badgeAlready")}</AlertDescription>
+        </Alert>
       )}
 
       {params.error === "no-checkout-url" && (
-        <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
-          {t("errorNoCheckout")}
-        </p>
+        <Alert variant="destructive" className="mt-4">
+          <AlertDescription>{t("errorNoCheckout")}</AlertDescription>
+        </Alert>
       )}
 
-      <div className="mt-8 rounded-lg border border-zinc-200 bg-white p-6">
-        <p className="text-sm text-zinc-500">{t("product")}</p>
-        <p className="text-lg font-medium text-zinc-900">{t("productName")}</p>
-        <p className="mt-2 text-3xl font-semibold text-zinc-900">{t("price")}</p>
+      <Card className="mt-8">
+        <CardContent className="p-6">
+          <p className="text-sm text-muted-foreground">{t("product")}</p>
+          <p className="text-lg font-medium text-foreground">{t("productName")}</p>
+          <p className="mt-2 text-3xl font-semibold text-foreground">{t("price")}</p>
 
-        {activeBadge ? (
-          <p className="mt-6 rounded-md bg-green-50 p-3 text-sm text-green-700">
-            {t("badgeActive")}
-          </p>
-        ) : (
-          <form action={startCheckoutAction} className="mt-6">
-            <button
-              type="submit"
-              className="rounded-md bg-zinc-900 px-5 py-2 text-sm font-medium text-white hover:bg-zinc-700"
-            >
-              {t("buy")}
-            </button>
-          </form>
-        )}
-      </div>
+          {activeBadge ? (
+            <Alert className="mt-6">
+              <AlertDescription>{t("badgeActive")}</AlertDescription>
+            </Alert>
+          ) : (
+            <form action={startCheckoutAction} className="mt-6">
+              <Button type="submit">{t("buy")}</Button>
+            </form>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

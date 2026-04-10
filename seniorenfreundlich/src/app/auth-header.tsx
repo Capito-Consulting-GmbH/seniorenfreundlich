@@ -3,49 +3,55 @@
 import { useState } from "react";
 import { Show, SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
+import { Menu } from "lucide-react";
 import { Link } from "@/src/i18n/navigation";
 import { WordMark } from "@/src/components/WordMark";
 import { LocaleSwitcher } from "@/src/components/LocaleSwitcher";
+import { ThemeToggle } from "@/src/components/ThemeToggle";
+import { Button } from "@/src/components/ui/button";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/src/components/ui/sheet";
+import { Separator } from "@/src/components/ui/separator";
 
 export function AuthHeader() {
   const { isSignedIn } = useAuth();
   const t = useTranslations("nav");
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <header className="relative w-full border-b border-zinc-200 bg-white">
-      <div className="flex items-center justify-between gap-3 px-6 py-4">
+    <header className="w-full border-b bg-background">
+      <div className="flex items-center justify-between gap-3 px-6 py-3">
         {/* Logo */}
         <WordMark />
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 md:flex">
-          <Link href="/companies" className="text-sm text-zinc-600 hover:text-zinc-900">
+          <Link href="/companies" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {t("companies")}
           </Link>
           {isSignedIn && (
-            <Link href="/dashboard" className="text-sm text-zinc-600 hover:text-zinc-900">
+            <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {t("dashboard")}
             </Link>
           )}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <div className="hidden sm:block">
             <LocaleSwitcher />
           </div>
+          <ThemeToggle />
 
-          {/* Auth buttons — desktop only */}
+          {/* Auth buttons — desktop */}
           <Show when="signed-out">
             <SignInButton forceRedirectUrl="/dashboard">
-              <button className="hidden rounded-full border border-zinc-300 px-4 py-1.5 text-sm font-medium text-zinc-700 hover:border-zinc-500 sm:block">
+              <Button variant="outline" size="sm" className="hidden rounded-full sm:flex">
                 {t("signIn")}
-              </button>
+              </Button>
             </SignInButton>
             <SignUpButton forceRedirectUrl="/dashboard">
-              <button className="hidden rounded-full bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-zinc-700 sm:block">
+              <Button size="sm" className="hidden rounded-full sm:flex">
                 {t("signUp")}
-              </button>
+              </Button>
             </SignUpButton>
           </Show>
           <Show when="signed-in">
@@ -53,60 +59,55 @@ export function AuthHeader() {
           </Show>
 
           {/* Mobile hamburger */}
-          <button
-            className="rounded-md p-1.5 text-zinc-600 hover:bg-zinc-100 md:hidden"
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {mobileOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden" aria-label="Toggle menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-72 pt-10">
+              <SheetTitle className="sr-only">{t("menuLabel")}</SheetTitle>
+              <nav className="flex flex-col gap-1">
+                <Link
+                  href="/companies"
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+                >
+                  {t("companies")}
+                </Link>
+                {isSignedIn && (
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+                  >
+                    {t("dashboard")}
+                  </Link>
+                )}
+              </nav>
+              <Separator className="my-4" />
+              <div className="flex flex-col gap-2 px-1">
+                <div className="sm:hidden">
+                  <LocaleSwitcher onLocaleChange={() => setOpen(false)} />
+                </div>
+                <Show when="signed-out">
+                  <SignInButton forceRedirectUrl="/dashboard">
+                    <Button variant="outline" className="w-full rounded-full" onClick={() => setOpen(false)}>
+                      {t("signIn")}
+                    </Button>
+                  </SignInButton>
+                  <SignUpButton forceRedirectUrl="/dashboard">
+                    <Button className="w-full rounded-full" onClick={() => setOpen(false)}>
+                      {t("signUp")}
+                    </Button>
+                  </SignUpButton>
+                </Show>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-
-      {/* Mobile dropdown */}
-      {mobileOpen && (
-        <div className="flex flex-col gap-3 border-t border-zinc-200 bg-white px-6 py-4 md:hidden">
-          <Link
-            href="/companies"
-            className="text-sm text-zinc-600 hover:text-zinc-900"
-            onClick={() => setMobileOpen(false)}
-          >
-            {t("companies")}
-          </Link>
-          {isSignedIn && (
-            <Link
-              href="/dashboard"
-              className="text-sm text-zinc-600 hover:text-zinc-900"
-              onClick={() => setMobileOpen(false)}
-            >
-              {t("dashboard")}
-            </Link>
-          )}
-
-          <div className="sm:hidden">
-            <LocaleSwitcher onLocaleChange={() => setMobileOpen(false)} />
-          </div>
-
-          <Show when="signed-out">
-            <SignInButton forceRedirectUrl="/dashboard">
-              <button className="w-full rounded-full border border-zinc-300 px-4 py-1.5 text-sm font-medium text-zinc-700 hover:border-zinc-500">
-                {t("signIn")}
-              </button>
-            </SignInButton>
-            <SignUpButton forceRedirectUrl="/dashboard">
-              <button className="w-full rounded-full bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-zinc-700">
-                {t("signUp")}
-              </button>
-            </SignUpButton>
-          </Show>
-        </div>
-      )}
     </header>
   );
 }
+

@@ -4,6 +4,10 @@ import { useState } from "react";
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { createCompanyAction, type CreateCompanyState } from "@/src/actions/createCompany";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 const initialState: CreateCompanyState = {};
 
@@ -26,21 +30,21 @@ export default function OnboardingPage() {
 
   return (
     <div className="max-w-lg">
-      <h1 className="text-2xl font-semibold text-zinc-900">{t("title")}</h1>
-      <p className="mt-2 text-zinc-600">{t("subtitle")}</p>
+      <h1 className="text-2xl font-semibold text-foreground">{t("title")}</h1>
+      <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
 
       {state.errors?._form && (
-        <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
-          {state.errors._form.join(", ")}
-        </div>
+        <Alert variant="destructive" className="mt-4">
+          <AlertDescription>{state.errors._form.join(", ")}</AlertDescription>
+        </Alert>
       )}
 
       <form action={action} className="mt-8 space-y-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-zinc-700">
-            {t("labelName")} <span className="text-red-500">*</span>
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="name">
+            {t("labelName")} <span className="text-destructive">*</span>
+          </Label>
+          <Input
             id="name"
             name="name"
             type="text"
@@ -54,28 +58,28 @@ export default function OnboardingPage() {
                 setSlug(slugify(nextName));
               }
             }}
-            className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
           />
           {state.errors?.name && (
-            <p className="mt-1 text-xs text-red-600">{state.errors.name.join(", ")}</p>
+            <p className="text-xs text-destructive">{state.errors.name.join(", ")}</p>
           )}
         </div>
 
-        <div>
-          <label htmlFor="slug" className="block text-sm font-medium text-zinc-700">
-            {t("labelSlug")} <span className="text-red-500">*</span>
-          </label>
-          <div className="mt-1 flex rounded-md shadow-sm">
-            <span className="inline-flex items-center rounded-l-md border border-r-0 border-zinc-300 bg-zinc-50 px-3 text-sm text-zinc-500">
+        <div className="space-y-2">
+          <Label htmlFor="slug">
+            {t("labelSlug")} <span className="text-destructive">*</span>
+          </Label>
+          <div className="flex rounded-md shadow-sm">
+            <span className="inline-flex items-center rounded-l-md border border-r-0 border-input bg-muted px-3 text-sm text-muted-foreground">
               {t("slugPrefix")}
             </span>
-            <input
+            <Input
               id="slug"
               name="slug"
               type="text"
               required
               placeholder="muster-gmbh"
               value={slug}
+              className="rounded-l-none"
               onChange={(e) => {
                 setSlugEdited(true);
                 setSlug(slugify(e.target.value));
@@ -87,22 +91,17 @@ export default function OnboardingPage() {
                   setSlug((prev) => slugify(`${prev}-`));
                 }
               }}
-              className="block w-full rounded-r-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
           </div>
-          <p className="mt-1 text-xs text-zinc-500">{t("slugHint")}</p>
+          <p className="text-xs text-muted-foreground">{t("slugHint")}</p>
           {state.errors?.slug && (
-            <p className="mt-1 text-xs text-red-600">{state.errors.slug.join(", ")}</p>
+            <p className="text-xs text-destructive">{state.errors.slug.join(", ")}</p>
           )}
         </div>
 
-        <button
-          type="submit"
-          disabled={pending}
-          className="w-full rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
-        >
+        <Button type="submit" disabled={pending} className="w-full">
           {pending ? t("submitting") : t("submit")}
-        </button>
+        </Button>
       </form>
     </div>
   );

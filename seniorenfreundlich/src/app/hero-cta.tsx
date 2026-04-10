@@ -3,6 +3,7 @@
 import { useAuth, SignUpButton } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
+import { Button } from "@/src/components/ui/button";
 
 export function HeroCta() {
   const { isSignedIn } = useAuth();
@@ -10,20 +11,17 @@ export function HeroCta() {
 
   if (isSignedIn) {
     return (
-      <Link
-        href="/dashboard"
-        className="rounded-full bg-zinc-900 px-8 py-3 text-sm font-semibold text-white hover:bg-zinc-700"
-      >
-        {t("ctaDashboard")}
-      </Link>
+      <Button size="lg" className="rounded-full" asChild>
+        <Link href="/dashboard">{t("ctaDashboard")}</Link>
+      </Button>
     );
   }
 
   return (
     <SignUpButton forceRedirectUrl="/dashboard">
-      <button className="rounded-full bg-zinc-900 px-8 py-3 text-sm font-semibold text-white hover:bg-zinc-700">
+      <Button size="lg" className="rounded-full">
         {t("cta")}
-      </button>
+      </Button>
     </SignUpButton>
   );
 }

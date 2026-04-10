@@ -6,7 +6,8 @@
     "signUp": "Sign up",
     "languageLabel": "Language",
     "langDe": "DE",
-    "langEn": "EN"
+    "langEn": "EN",
+    "menuLabel": "Navigation menu"
   },
   "footer": {
     "imprint": "Imprint",
@@ -130,7 +131,8 @@
       "profile": "Profile",
       "billing": "Billing",
       "badge": "Badge",
-      "directory": "Company Directory"
+      "directory": "Company Directory",
+      "menu": "Navigation menu"
     },
     "overview": {
       "welcome": "Welcome, {name}",

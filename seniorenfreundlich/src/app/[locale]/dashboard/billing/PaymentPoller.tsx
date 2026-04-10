@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/src/i18n/navigation";
 import { Link } from "@/src/i18n/navigation";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 type OrderStatus = "pending" | "paid" | "failed" | "expired" | "refunded" | null;
 
@@ -57,62 +58,68 @@ export default function PaymentPoller() {
 
   if (status === "paid") {
     return (
-      <div className="mt-4 rounded-md bg-green-50 p-4 text-sm text-green-700">
-        <div className="flex items-center gap-2">
+      <Alert className="mt-4">
+        <AlertDescription className="flex items-center gap-2">
           <span className="text-lg">✓</span>
           <span className="font-medium">{t("paymentSuccess")}</span>
-        </div>
-      </div>
+        </AlertDescription>
+      </Alert>
     );
   }
 
   if (status === "failed") {
     return (
-      <div className="mt-4 rounded-md bg-red-50 p-4 text-sm text-red-700">
-        <p className="font-medium">{t("paymentFailedTitle")}</p>
-        <p className="mt-1">{t("paymentFailedDesc")}</p>
-      </div>
+      <Alert variant="destructive" className="mt-4">
+        <AlertDescription>
+          <p className="font-medium">{t("paymentFailedTitle")}</p>
+          <p className="mt-1">{t("paymentFailedDesc")}</p>
+        </AlertDescription>
+      </Alert>
     );
   }
 
   if (status === "expired") {
     return (
-      <div className="mt-4 rounded-md bg-amber-50 p-4 text-sm text-amber-800">
-        <p className="font-medium">{t("paymentExpiredTitle")}</p>
-        <p className="mt-1">{t("paymentExpiredDesc")}</p>
-      </div>
+      <Alert className="mt-4">
+        <AlertDescription>
+          <p className="font-medium">{t("paymentExpiredTitle")}</p>
+          <p className="mt-1">{t("paymentExpiredDesc")}</p>
+        </AlertDescription>
+      </Alert>
     );
   }
 
   if (gaveUp) {
     return (
-      <div className="mt-4 rounded-md bg-zinc-100 p-4 text-sm text-zinc-700">
-        <p className="font-medium">{t("paymentTimeoutTitle")}</p>
-        <p className="mt-1">
-          {t("paymentTimeoutDesc")}{" "}
-          <Link href="/dashboard/badge" className="underline">
-            {t("paymentTimeoutLink")}
-          </Link>
-          .
-        </p>
-      </div>
+      <Alert className="mt-4">
+        <AlertDescription>
+          <p className="font-medium">{t("paymentTimeoutTitle")}</p>
+          <p className="mt-1">
+            {t("paymentTimeoutDesc")}{" "}
+            <Link href="/dashboard/badge" className="underline">
+              {t("paymentTimeoutLink")}
+            </Link>
+            .
+          </p>
+        </AlertDescription>
+      </Alert>
     );
   }
 
   return (
-    <div className="mt-4 rounded-md bg-blue-50 p-4 text-sm text-blue-700">
-      <div className="flex items-center gap-3">
+    <Alert className="mt-4">
+      <AlertDescription className="flex items-center gap-3">
         <Spinner />
         <span>{t("paymentPending")}</span>
-      </div>
-    </div>
+      </AlertDescription>
+    </Alert>
   );
 }
 
 function Spinner() {
   return (
     <svg
-      className="h-4 w-4 animate-spin text-blue-600"
+      className="h-4 w-4 animate-spin"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -129,7 +136,7 @@ function Spinner() {
       <path
         className="opacity-75"
         fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
       />
     </svg>
   );

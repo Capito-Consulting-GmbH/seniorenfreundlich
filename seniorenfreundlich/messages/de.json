@@ -6,7 +6,8 @@
     "signUp": "Registrieren",
     "languageLabel": "Sprache",
     "langDe": "DE",
-    "langEn": "EN"
+    "langEn": "EN",
+    "menuLabel": "Navigationsmenü"
   },
   "footer": {
     "imprint": "Impressum",
@@ -130,7 +131,8 @@
       "profile": "Profil",
       "billing": "Abrechnung",
       "badge": "Siegel",
-      "directory": "Unternehmensverzeichnis"
+      "directory": "Unternehmensverzeichnis",
+      "menu": "Navigationsmenü"
     },
     "overview": {
       "welcome": "Willkommen, {name}",

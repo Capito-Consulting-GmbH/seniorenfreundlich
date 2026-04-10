@@ -5,6 +5,7 @@ import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { CookiebotScript } from "@/src/components/CookiebotScript";
+import { ThemeProvider } from "@/src/components/ThemeProvider";
 import "./globals.css";
 import "@/src/env";
 import { env } from "@/src/env";
@@ -45,11 +46,13 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <ClerkProvider dynamic>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </ClerkProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ClerkProvider dynamic>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              {children}
+            </NextIntlClientProvider>
+          </ClerkProvider>
+        </ThemeProvider>
 
         {/* Cookiebot — loaded after hydration to prevent React mismatch */}
         {cookiebotId && <CookiebotScript cbid={cookiebotId} />}

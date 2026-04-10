@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children, params }: Props) {
   const t = await getTranslations("dashboard.nav");
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-muted/40">
       <DashboardNav
         labels={{
           overview: t("overview"),
@@ -20,6 +20,7 @@ export default async function DashboardLayout({ children, params }: Props) {
           billing: t("billing"),
           badge: t("badge"),
           directory: t("directory"),
+          menu: t("menu"),
         }}
       />
       <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>

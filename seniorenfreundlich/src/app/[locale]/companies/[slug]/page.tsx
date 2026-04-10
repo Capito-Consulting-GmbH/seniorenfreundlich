@@ -5,6 +5,10 @@ import { AuthHeader } from "@/src/app/auth-header";
 import { Link } from "@/src/i18n/navigation";
 import { getCompanyBySlug } from "@/src/services/companyService";
 import { getActiveBadgeForCompany } from "@/src/services/badgeService";
+import { Badge } from "@/src/components/ui/badge";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Button } from "@/src/components/ui/button";
+import { Separator } from "@/src/components/ui/separator";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -32,7 +36,7 @@ export default async function CompanyProfilePage({ params }: Props) {
   const badge = await getActiveBadgeForCompany(company.id);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <AuthHeader />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
@@ -45,14 +49,14 @@ export default async function CompanyProfilePage({ params }: Props) {
               className="h-16 w-auto object-contain"
             />
           ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-zinc-100 text-xl font-bold text-zinc-400">
+            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-muted text-xl font-bold text-muted-foreground">
               {company.name.charAt(0).toUpperCase()}
             </div>
           )}
           <div>
-            <h1 className="text-3xl font-bold text-zinc-900">{company.name}</h1>
+            <h1 className="text-3xl font-bold text-foreground">{company.name}</h1>
             {company.city && (
-              <p className="mt-1 text-zinc-500">{company.city}</p>
+              <p className="mt-1 text-muted-foreground">{company.city}</p>
             )}
           </div>
         </div>
@@ -60,47 +64,52 @@ export default async function CompanyProfilePage({ params }: Props) {
         {/* Badge status */}
         <div className="mt-8">
           {badge ? (
-            <div className="rounded-lg border border-green-200 bg-green-50 p-5">
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-white font-bold text-lg">
-                  ✓
+            <Card className="border-border">
+              <CardContent className="p-5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg">
+                    ✓
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-foreground">{t("badgeActive")}</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">
+                      {t("badgeIssuedOn", {
+                        date: new Date(badge.issuedAt).toLocaleDateString(locale, {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        }),
+                      })}
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/certificate/${company.slug}`}>
+                      {t("checkCertificate")}
+                    </Link>
+                  </Button>
                 </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-green-800">{t("badgeActive")}</p>
-                  <p className="mt-0.5 text-sm text-green-700">
-                    {t("badgeIssuedOn", {
-                      date: new Date(badge.issuedAt).toLocaleDateString(locale, {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      }),
-                    })}
-                  </p>
-                </div>
-                <Link
-                  href={`/certificate/${company.slug}`}
-                  className="rounded-md border border-green-300 px-3 py-1.5 text-xs font-medium text-green-800 hover:bg-green-100"
-                >
-                  {t("checkCertificate")}
-                </Link>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-5">
-              <p className="text-sm text-zinc-500">{t("noBadge")}</p>
-            </div>
+            <Card>
+              <CardContent className="p-5">
+                <p className="text-sm text-muted-foreground">{t("noBadge")}</p>
+              </CardContent>
+            </Card>
           )}
         </div>
 
         {/* Description */}
         {company.description && (
           <div className="mt-8">
-            <h2 className="text-lg font-semibold text-zinc-900">{t("about")}</h2>
-            <p className="mt-2 whitespace-pre-line text-zinc-600">
+            <h2 className="text-lg font-semibold text-foreground">{t("about")}</h2>
+            <p className="mt-2 whitespace-pre-line text-muted-foreground">
               {company.description}
             </p>
           </div>
         )}
+
+        <Separator className="mt-8" />
 
         {/* Contact details */}
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -110,7 +119,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                 href={company.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-800 underline underline-offset-2 hover:text-zinc-600"
+                className="text-foreground underline underline-offset-2 hover:text-muted-foreground"
               >
                 {company.website.replace(/^https?:\/\//, "")}
               </a>
@@ -118,21 +127,21 @@ export default async function CompanyProfilePage({ params }: Props) {
           )}
           {company.phone && (
             <ContactItem label={t("phone")}>
-              <a href={`tel:${company.phone}`} className="text-zinc-800">
+              <a href={`tel:${company.phone}`} className="text-foreground">
                 {company.phone}
               </a>
             </ContactItem>
           )}
           {company.email && (
             <ContactItem label={t("email")}>
-              <a href={`mailto:${company.email}`} className="text-zinc-800">
+              <a href={`mailto:${company.email}`} className="text-foreground">
                 {company.email}
               </a>
             </ContactItem>
           )}
           {(company.address ?? company.city ?? company.postalCode) && (
             <ContactItem label={t("address")}>
-              <span className="text-zinc-800">
+              <span className="text-foreground">
                 {[company.address, company.postalCode, company.city]
                   .filter(Boolean)
                   .join(", ")}
@@ -142,19 +151,19 @@ export default async function CompanyProfilePage({ params }: Props) {
         </div>
 
         <div className="mt-10">
-          <Link href="/companies" className="text-sm text-zinc-500 hover:text-zinc-800">
-            {t("backToList")}
-          </Link>
+          <Button variant="link" className="px-0 text-muted-foreground" asChild>
+            <Link href="/companies">{t("backToList")}</Link>
+          </Button>
         </div>
       </main>
 
-      <footer className="mt-16 border-t border-zinc-200 px-6 py-6 text-center text-xs text-zinc-400">
+      <footer className="mt-16 border-t px-6 py-6 text-center text-xs text-muted-foreground">
         <p>© {new Date().getFullYear()} Seniorenfreundlich.de</p>
         <nav className="mt-2 flex justify-center gap-4">
-          <Link href="/imprint" className="hover:text-zinc-600">{tFooter("imprint")}</Link>
-          <Link href="/privacy" className="hover:text-zinc-600">{tFooter("privacy")}</Link>
-          <Link href="/terms" className="hover:text-zinc-600">{tFooter("terms")}</Link>
-          <Link href="/cancellation" className="hover:text-zinc-600">{tFooter("cancellation")}</Link>
+          <Link href="/imprint" className="hover:text-foreground transition-colors">{tFooter("imprint")}</Link>
+          <Link href="/privacy" className="hover:text-foreground transition-colors">{tFooter("privacy")}</Link>
+          <Link href="/terms" className="hover:text-foreground transition-colors">{tFooter("terms")}</Link>
+          <Link href="/cancellation" className="hover:text-foreground transition-colors">{tFooter("cancellation")}</Link>
         </nav>
       </footer>
     </div>
@@ -169,11 +178,14 @@ function ContactItem({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-zinc-200 p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-        {label}
-      </p>
-      <div className="mt-1 text-sm">{children}</div>
-    </div>
+    <Card>
+      <CardContent className="p-4">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {label}
+        </p>
+        <div className="mt-1 text-sm">{children}</div>
+      </CardContent>
+    </Card>
   );
 }
+

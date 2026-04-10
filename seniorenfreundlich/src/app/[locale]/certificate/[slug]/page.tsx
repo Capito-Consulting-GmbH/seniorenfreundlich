@@ -6,6 +6,10 @@ import { Link } from "@/src/i18n/navigation";
 import { getCompanyBySlug } from "@/src/services/companyService";
 import { getLatestBadgeForCompany } from "@/src/services/badgeService";
 import { env } from "@/src/env";
+import { Badge } from "@/src/components/ui/badge";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Button } from "@/src/components/ui/button";
+import { Separator } from "@/src/components/ui/separator";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -36,134 +40,131 @@ export default async function CertificatePage({ params }: Props) {
   const assertionUrl = `${env.NEXT_PUBLIC_APP_URL}/api/openbadges/assertion/${badge.assertionId}`;
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-muted/40">
       <AuthHeader />
 
       <main className="mx-auto max-w-2xl px-6 py-16">
-        {/* Certificate card */}
-        <div
-          className={`rounded-2xl border-2 bg-white p-8 shadow-md ${
-            isActive ? "border-green-300" : "border-zinc-300"
-          }`}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
-                {t("issuer")}
-              </p>
-              <h1 className="mt-1 text-2xl font-bold text-zinc-900">
-                {t("title")}
-              </h1>
-            </div>
-            {company.logoUrl && (
-              <img
-                src={company.logoUrl}
-                alt={`${company.name} Logo`}
-                className="h-14 w-auto object-contain"
-              />
-            )}
-          </div>
-
-          <hr className="my-6 border-zinc-100" />
-
-          {/* Company */}
-          <div>
-            <p className="text-sm text-zinc-500">{t("issuedFor")}</p>
-            <p className="mt-1 text-xl font-semibold text-zinc-900">
-              {company.name}
-            </p>
-            {company.city && (
-              <p className="mt-0.5 text-sm text-zinc-500">{company.city}</p>
-            )}
-          </div>
-
-          {/* Status */}
-          <div className="mt-6">
-            {isActive ? (
-              <span className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-1.5 text-sm font-semibold text-green-700 ring-1 ring-green-200">
-                <span className="h-2 w-2 rounded-full bg-green-500" />
-                {t("statusActive")}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-1.5 text-sm font-semibold text-red-700 ring-1 ring-red-200">
-                <span className="h-2 w-2 rounded-full bg-red-500" />
-                {t("statusRevoked")}
-              </span>
-            )}
-          </div>
-
-          {/* Dates */}
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                {t("issuedOn")}
-              </p>
-              <p className="mt-1 text-sm text-zinc-800">
-                {new Date(badge.issuedAt).toLocaleDateString(locale, {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </p>
-            </div>
-            {!isActive && badge.revokedAt && (
+        <Card className="border-2 shadow-md">
+          <CardContent className="p-8">
+            {/* Header */}
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                  {t("revokedOn")}
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {t("issuer")}
                 </p>
-                <p className="mt-1 text-sm text-red-700">
-                  {new Date(badge.revokedAt).toLocaleDateString(locale, {
+                <h1 className="mt-1 text-2xl font-bold text-foreground">
+                  {t("title")}
+                </h1>
+              </div>
+              {company.logoUrl && (
+                <img
+                  src={company.logoUrl}
+                  alt={`${company.name} Logo`}
+                  className="h-14 w-auto object-contain"
+                />
+              )}
+            </div>
+
+            <Separator className="my-6" />
+
+            {/* Company */}
+            <div>
+              <p className="text-sm text-muted-foreground">{t("issuedFor")}</p>
+              <p className="mt-1 text-xl font-semibold text-foreground">
+                {company.name}
+              </p>
+              {company.city && (
+                <p className="mt-0.5 text-sm text-muted-foreground">{company.city}</p>
+              )}
+            </div>
+
+            {/* Status */}
+            <div className="mt-6">
+              {isActive ? (
+                <Badge variant="secondary" className="gap-2 rounded-full px-4 py-1.5">
+                  <span className="h-2 w-2 rounded-full bg-foreground/40" />
+                  {t("statusActive")}
+                </Badge>
+              ) : (
+                <Badge variant="destructive" className="gap-2 rounded-full px-4 py-1.5">
+                  <span className="h-2 w-2 rounded-full bg-white/80" />
+                  {t("statusRevoked")}
+                </Badge>
+              )}
+            </div>
+
+            {/* Dates */}
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {t("issuedOn")}
+                </p>
+                <p className="mt-1 text-sm text-foreground">
+                  {new Date(badge.issuedAt).toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "long",
                     year: "numeric",
                   })}
                 </p>
               </div>
-            )}
-          </div>
+              {!isActive && badge.revokedAt && (
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {t("revokedOn")}
+                  </p>
+                  <p className="mt-1 text-sm text-destructive">
+                    {new Date(badge.revokedAt).toLocaleDateString(locale, {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+              )}
+            </div>
 
-          <hr className="my-6 border-zinc-100" />
+            <Separator className="my-6" />
 
-          {/* Verification */}
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-              {t("proofId")}
-            </p>
-            <p className="mt-1 font-mono text-xs text-zinc-500 break-all">
-              {badge.assertionId}
-            </p>
-            <a
-              href={assertionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block text-xs text-zinc-500 underline underline-offset-2 hover:text-zinc-800"
-            >
-              {t("viewJson")}
-            </a>
-          </div>
-        </div>
+            {/* Verification */}
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {t("proofId")}
+              </p>
+              <p className="mt-1 font-mono text-xs text-muted-foreground break-all">
+                {badge.assertionId}
+              </p>
+              <a
+                href={assertionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors"
+              >
+                {t("viewJson")}
+              </a>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Back link */}
         <div className="mt-8 text-center">
-          <Link
-            href={`/companies/${company.slug}`}
-            className="text-sm text-zinc-500 hover:text-zinc-800"
-          >
-            {t("backToProfile")}
-          </Link>
+          <Button variant="link" className="text-muted-foreground" asChild>
+            <Link href={`/companies/${company.slug}`}>
+              {t("backToProfile")}
+            </Link>
+          </Button>
         </div>
       </main>
 
-      <footer className="mt-8 border-t border-zinc-200 px-6 py-6 text-center text-xs text-zinc-400">
+      <footer className="mt-8 border-t px-6 py-6 text-center text-xs text-muted-foreground">
         <p>© {new Date().getFullYear()} Seniorenfreundlich.de</p>
         <nav className="mt-2 flex justify-center gap-4">
-          <Link href="/imprint" className="hover:text-zinc-600">{tFooter("imprint")}</Link>
-          <Link href="/privacy" className="hover:text-zinc-600">{tFooter("privacy")}</Link>
-          <Link href="/terms" className="hover:text-zinc-600">{tFooter("terms")}</Link>
-          <Link href="/cancellation" className="hover:text-zinc-600">{tFooter("cancellation")}</Link>
+          <Link href="/imprint" className="hover:text-foreground transition-colors">{tFooter("imprint")}</Link>
+          <Link href="/privacy" className="hover:text-foreground transition-colors">{tFooter("privacy")}</Link>
+          <Link href="/terms" className="hover:text-foreground transition-colors">{tFooter("terms")}</Link>
+          <Link href="/cancellation" className="hover:text-foreground transition-colors">{tFooter("cancellation")}</Link>
         </nav>
       </footer>
     </div>
   );
 }
+

@@ -5,6 +5,11 @@ import { useTranslations } from "next-intl";
 import { updateCompanyProfileAction, type UpdateCompanyProfileState } from "@/src/actions/updateCompanyProfile";
 import type { Company } from "@/src/services/companyService";
 import LogoUpload from "./LogoUpload";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Textarea } from "@/src/components/ui/textarea";
+import { Label } from "@/src/components/ui/label";
+import { Alert, AlertDescription } from "@/src/components/ui/alert";
 
 const initialState: UpdateCompanyProfileState = {};
 
@@ -16,14 +21,14 @@ export default function ProfileForm({ company }: { company: Company }) {
   return (
     <div className="mt-8">
       {state.success && (
-        <div className="mb-6 rounded-md bg-green-50 p-3 text-sm text-green-700">
-          {t("saved")}
-        </div>
+        <Alert className="mb-6">
+          <AlertDescription>{t("saved")}</AlertDescription>
+        </Alert>
       )}
       {state.errors?._form && (
-        <div className="mb-6 rounded-md bg-red-50 p-3 text-sm text-red-700">
-          {state.errors._form.join(", ")}
-        </div>
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>{state.errors._form.join(", ")}</AlertDescription>
+        </Alert>
       )}
 
       <form action={action} className="space-y-6">
@@ -92,13 +97,9 @@ export default function ProfileForm({ company }: { company: Company }) {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-md bg-zinc-900 px-5 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
-        >
+        <Button type="submit" disabled={pending}>
           {pending ? t("saving") : t("save")}
-        </button>
+        </Button>
       </form>
     </div>
   );
@@ -129,25 +130,21 @@ function Field({
   pattern,
   maxLength,
 }: FieldProps) {
-  const base =
-    "mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500";
-
   return (
-    <div>
-      <label htmlFor={name} className="block text-sm font-medium text-zinc-700">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
+    <div className="space-y-1">
+      <Label htmlFor={name}>
+        {label} {required && <span className="text-destructive">*</span>}
+      </Label>
       {type === "textarea" ? (
-        <textarea
+        <Textarea
           id={name}
           name={name}
           rows={4}
           placeholder={placeholder}
           defaultValue={defaultValue}
-          className={base}
         />
       ) : (
-        <input
+        <Input
           id={name}
           name={name}
           type={type}
@@ -157,10 +154,9 @@ function Field({
           inputMode={inputMode}
           pattern={pattern}
           maxLength={maxLength}
-          className={base}
         />
       )}
-      {error && <p className="mt-1 text-xs text-red-600">{error.join(", ")}</p>}
+      {error && <p className="text-xs text-destructive">{error.join(", ")}</p>}
     </div>
   );
 }
