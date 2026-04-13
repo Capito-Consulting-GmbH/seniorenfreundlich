@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children, params }: Props) {
   const t = await getTranslations("dashboard.nav");
 
   return (
-    <div className="min-h-screen bg-muted/40">
+    <div className="min-h-screen">
       <DashboardNav
         labels={{
           overview: t("overview"),
