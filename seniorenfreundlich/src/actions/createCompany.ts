@@ -47,7 +47,7 @@ export async function createCompanyAction(
   const company = await createCompany({
     name,
     slug,
-    ownerClerkUserId: userId,
+    ownerUserId: userId,
     country: "DE",
   });
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Show, SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import { Menu } from "lucide-react";
-import { Link } from "@/src/i18n/navigation";
+import { Link, useRouter } from "@/src/i18n/navigation";
+import { useSession, signOut } from "@/src/lib/auth-client";
 import { WordMark } from "@/src/components/WordMark";
 import { LocaleSwitcher } from "@/src/components/LocaleSwitcher";
 import { ThemeToggle } from "@/src/components/ThemeToggle";
@@ -13,9 +13,14 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/src/components/
 import { Separator } from "@/src/components/ui/separator";
 
 export function AuthHeader() {
-  const { isSignedIn } = useAuth();
+  const { data: session } = useSession();
   const t = useTranslations("nav");
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  function handleSignOut() {
+    signOut({ fetchOptions: { onSuccess: () => router.push("/") } });
+  }
 
   return (
     <header className="w-full border-b bg-background">
@@ -28,7 +33,7 @@ export function AuthHeader() {
           <Link href="/companies" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {t("companies")}
           </Link>
-          {isSignedIn && (
+          {session && (
             <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {t("dashboard")}
             </Link>
@@ -42,21 +47,24 @@ export function AuthHeader() {
           <ThemeToggle />
 
           {/* Auth buttons — desktop */}
-          <Show when="signed-out">
-            <SignInButton forceRedirectUrl="/dashboard">
-              <Button variant="outline" size="sm" className="hidden rounded-full sm:flex">
-                {t("signIn")}
-              </Button>
-            </SignInButton>
-            <SignUpButton forceRedirectUrl="/dashboard">
-              <Button size="sm" className="hidden rounded-full sm:flex">
-                {t("signUp")}
-              </Button>
-            </SignUpButton>
-          </Show>
-          <Show when="signed-in">
-            <UserButton />
-          </Show>
+          {session ? (
+            <Button variant="ghost" size="sm" className="hidden rounded-full sm:flex" onClick={handleSignOut}>
+              {t("signOut")}
+            </Button>
+          ) : (
+            <>
+              <Link href="/sign-in">
+                <Button variant="outline" size="sm" className="hidden rounded-full sm:flex">
+                  {t("signIn")}
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button size="sm" className="hidden rounded-full sm:flex">
+                  {t("signUp")}
+                </Button>
+              </Link>
+            </>
+          )}
 
           {/* Mobile hamburger */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -75,7 +83,7 @@ export function AuthHeader() {
                 >
                   {t("companies")}
                 </Link>
-                {isSignedIn && (
+                {session && (
                   <Link
                     href="/dashboard"
                     onClick={() => setOpen(false)}
@@ -90,18 +98,28 @@ export function AuthHeader() {
                 <div className="sm:hidden">
                   <LocaleSwitcher onLocaleChange={() => setOpen(false)} />
                 </div>
-                <Show when="signed-out">
-                  <SignInButton forceRedirectUrl="/dashboard">
-                    <Button variant="outline" className="w-full rounded-full" onClick={() => setOpen(false)}>
-                      {t("signIn")}
-                    </Button>
-                  </SignInButton>
-                  <SignUpButton forceRedirectUrl="/dashboard">
-                    <Button className="w-full rounded-full" onClick={() => setOpen(false)}>
-                      {t("signUp")}
-                    </Button>
-                  </SignUpButton>
-                </Show>
+                {session ? (
+                  <Button
+                    variant="outline"
+                    className="w-full rounded-full"
+                    onClick={() => { setOpen(false); handleSignOut(); }}
+                  >
+                    {t("signOut")}
+                  </Button>
+                ) : (
+                  <>
+                    <Link href="/sign-in" onClick={() => setOpen(false)}>
+                      <Button variant="outline" className="w-full rounded-full">
+                        {t("signIn")}
+                      </Button>
+                    </Link>
+                    <Link href="/sign-up" onClick={() => setOpen(false)}>
+                      <Button className="w-full rounded-full">
+                        {t("signUp")}
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </SheetContent>
           </Sheet>

@@ -28,7 +28,7 @@ export async function revokeBadgeAction(): Promise<RevokeBadgeState> {
     entityType: "badge",
     entityId: badge.id,
     action: "badge_revoked",
-    actorId: company.ownerClerkUserId,
+    actorId: company.ownerUserId,
     metadata: { companyId: company.id },
   });
 

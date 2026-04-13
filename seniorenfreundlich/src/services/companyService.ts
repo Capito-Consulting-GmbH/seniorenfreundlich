@@ -6,12 +6,12 @@ export type Company = typeof companies.$inferSelect;
 export type NewCompany = typeof companies.$inferInsert;
 
 export async function getCompanyByOwner(
-  ownerClerkUserId: string
+  ownerUserId: string
 ): Promise<Company | null> {
   const result = await db
     .select()
     .from(companies)
-    .where(eq(companies.ownerClerkUserId, ownerClerkUserId))
+    .where(eq(companies.ownerUserId, ownerUserId))
     .limit(1);
   return result[0] ?? null;
 }
@@ -34,7 +34,7 @@ export async function createCompany(data: NewCompany): Promise<Company> {
 
 export async function updateCompany(
   id: string,
-  data: Partial<Omit<NewCompany, "id" | "ownerClerkUserId" | "createdAt">>
+  data: Partial<Omit<NewCompany, "id" | "ownerUserId" | "createdAt">>
 ): Promise<Company> {
   const [company] = await db
     .update(companies)

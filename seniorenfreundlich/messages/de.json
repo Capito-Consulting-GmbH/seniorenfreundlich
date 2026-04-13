@@ -4,6 +4,7 @@
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
     "signUp": "Registrieren",
+    "signOut": "Abmelden",
     "languageLabel": "Sprache",
     "langDe": "DE",
     "langEn": "EN",
@@ -210,5 +211,23 @@
       "revoking": "Wird entwertet…",
       "revokeSuccess": "Siegel wurde entwertet."
     }
+  },
+  "auth": {
+    "signInTitle": "Willkommen zurück",
+    "signInSubtitle": "Melden Sie sich an, um fortzufahren.",
+    "signUpTitle": "Konto erstellen",
+    "signUpSubtitle": "Erstellen Sie ein Konto, um zu beginnen.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Max Mustermann",
+    "emailLabel": "E-Mail-Adresse",
+    "emailPlaceholder": "name@beispiel.de",
+    "passwordLabel": "Passwort",
+    "passwordPlaceholder": "Mindestens 8 Zeichen",
+    "submitSignIn": "Anmelden",
+    "submitSignUp": "Registrieren",
+    "switchToSignUp": "Noch kein Konto? Registrieren",
+    "switchToSignIn": "Bereits ein Konto? Anmelden",
+    "errorInvalid": "Ungültige E-Mail-Adresse oder falsches Passwort.",
+    "errorGeneric": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
   }
 }

@@ -41,7 +41,7 @@ export async function startCheckoutAction(): Promise<void> {
     entityType: "order",
     entityId: payment.id,
     action: "checkout_started",
-    actorId: company.ownerClerkUserId,
+    actorId: company.ownerUserId,
     metadata: {
       molliePaymentId: payment.id,
       amount: 9900,

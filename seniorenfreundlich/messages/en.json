@@ -4,6 +4,7 @@
     "dashboard": "Dashboard",
     "signIn": "Sign in",
     "signUp": "Sign up",
+    "signOut": "Sign out",
     "languageLabel": "Language",
     "langDe": "DE",
     "langEn": "EN",
@@ -210,5 +211,23 @@
       "revoking": "Revoking…",
       "revokeSuccess": "Seal has been revoked."
     }
+  },
+  "auth": {
+    "signInTitle": "Welcome back",
+    "signInSubtitle": "Sign in to your account to continue.",
+    "signUpTitle": "Create an account",
+    "signUpSubtitle": "Sign up to get started.",
+    "nameLabel": "Name",
+    "namePlaceholder": "John Doe",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "submitSignIn": "Sign in",
+    "submitSignUp": "Sign up",
+    "switchToSignUp": "No account yet? Sign up",
+    "switchToSignIn": "Already have an account? Sign in",
+    "errorInvalid": "Invalid email or password.",
+    "errorGeneric": "Something went wrong. Please try again."
   }
 }

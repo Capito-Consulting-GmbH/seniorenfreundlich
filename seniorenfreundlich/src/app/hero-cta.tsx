@@ -1,15 +1,15 @@
 "use client";
 
-import { useAuth, SignUpButton } from "@clerk/nextjs";
+import { useSession } from "@/src/lib/auth-client";
 import { useTranslations } from "next-intl";
 import { Link } from "@/src/i18n/navigation";
 import { Button } from "@/src/components/ui/button";
 
 export function HeroCta() {
-  const { isSignedIn } = useAuth();
+  const { data: session } = useSession();
   const t = useTranslations("home");
 
-  if (isSignedIn) {
+  if (session) {
     return (
       <Button size="lg" className="rounded-full" asChild>
         <Link href="/dashboard">{t("ctaDashboard")}</Link>
@@ -18,10 +18,8 @@ export function HeroCta() {
   }
 
   return (
-    <SignUpButton forceRedirectUrl="/dashboard">
-      <Button size="lg" className="rounded-full">
-        {t("cta")}
-      </Button>
-    </SignUpButton>
+    <Button size="lg" className="rounded-full" asChild>
+      <Link href="/sign-up">{t("cta")}</Link>
+    </Button>
   );
 }

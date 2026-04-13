@@ -3,7 +3,8 @@ import { z } from "zod";
 const serverEnvSchema = z.object({
   // : z.enum(["development", "test", "production"]).default("development"),
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
-  CLERK_SECRET_KEY: z.string().min(1, "CLERK_SECRET_KEY is required"),
+  BETTER_AUTH_SECRET: z.string().min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
+  BETTER_AUTH_URL: z.string().url("BETTER_AUTH_URL must be a valid URL"),
   MOLLIE_API_KEY: z.string().min(1, "MOLLIE_API_KEY is required"),
   MOLLIE_WEBHOOK_URL: z.url("MOLLIE_WEBHOOK_URL must be a valid URL"),
   BREVO_API_KEY: z.string().min(1, "BREVO_API_KEY is required"),
@@ -13,9 +14,6 @@ const serverEnvSchema = z.object({
 
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url("NEXT_PUBLIC_APP_URL must be a valid URL"),
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z
-    .string()
-    .min(1, "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is required"),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
   NEXT_PUBLIC_COOKIEBOT_ID: z.string().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.url("NEXT_PUBLIC_SENTRY_DSN must be a valid URL"),
