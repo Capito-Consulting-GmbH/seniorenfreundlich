@@ -82,6 +82,12 @@ export default async function BillingPage({
         </Alert>
       )}
 
+      {params.error === "not-verified" && (
+        <Alert variant="destructive" className="mt-4">
+          <AlertDescription>{t("notVerified")}</AlertDescription>
+        </Alert>
+      )}
+
       <Card className="mt-8">
         <CardContent className="p-6">
           <p className="text-sm text-muted-foreground">{t("product")}</p>
@@ -91,6 +97,10 @@ export default async function BillingPage({
           {activeBadge ? (
             <Alert className="mt-6">
               <AlertDescription>{t("badgeActive")}</AlertDescription>
+            </Alert>
+          ) : company.verificationStatus !== "verified" ? (
+            <Alert className="mt-6">
+              <AlertDescription>{t("notVerifiedGate")}</AlertDescription>
             </Alert>
           ) : (
             <form action={startCheckoutAction} className="mt-6">

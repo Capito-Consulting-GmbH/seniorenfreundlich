@@ -212,6 +212,8 @@
       "badgeActive": "Your seal is already active.",
       "buy": "Buy Seal",
       "errorNoCheckout": "Checkout could not be started. Please try again.",
+      "notVerified": "Your company must be verified before purchasing a seal.",
+      "notVerifiedGate": "Your company profile is not yet verified. Verification is required before you can purchase a seal.",
       "paymentSuccess": "Payment successful! Redirecting…",
       "paymentFailedTitle": "Payment failed.",
       "paymentFailedDesc": "Please try again.",

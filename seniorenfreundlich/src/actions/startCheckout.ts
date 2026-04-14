@@ -19,6 +19,10 @@ export async function startCheckoutAction(): Promise<void> {
     redirect("/dashboard/onboarding");
   }
 
+  if (company.verificationStatus !== "verified") {
+    redirect("/dashboard/billing?error=not-verified");
+  }
+
   const activeBadge = await getActiveBadgeForCompany(company.id);
   if (activeBadge) {
     redirect("/dashboard/billing?error=badge-active");

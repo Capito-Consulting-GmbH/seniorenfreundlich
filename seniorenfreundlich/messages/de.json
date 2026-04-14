@@ -212,6 +212,8 @@
       "badgeActive": "Ihr Siegel ist bereits aktiv.",
       "buy": "Siegel kaufen",
       "errorNoCheckout": "Checkout konnte nicht gestartet werden. Bitte erneut versuchen.",
+      "notVerified": "Ihr Unternehmen muss vor dem Kauf eines Siegels verifiziert sein.",
+      "notVerifiedGate": "Ihr Unternehmensprofil ist noch nicht verifiziert. Eine Verifizierung ist erforderlich, bevor Sie ein Siegel kaufen können.",
       "paymentSuccess": "Zahlung erfolgreich! Sie werden weitergeleitet…",
       "paymentFailedTitle": "Die Zahlung ist fehlgeschlagen.",
       "paymentFailedDesc": "Bitte versuchen Sie es erneut.",
