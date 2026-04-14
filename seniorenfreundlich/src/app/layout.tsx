@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import "@/src/env";
 import { env } from "@/src/env";
@@ -73,6 +74,9 @@ export default function RootLayout({
             </Script>
           </>
         )}
+        
+        {/* Vercel Web Analytics */}
+        <Analytics />
       </body>
     </html>
   );
