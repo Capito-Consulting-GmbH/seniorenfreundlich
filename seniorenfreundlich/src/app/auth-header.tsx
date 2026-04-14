@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/src/components/ThemeToggle";
 import { Button } from "@/src/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/src/components/ui/sheet";
 import { Separator } from "@/src/components/ui/separator";
+import { DashboardUserNav } from "@/src/app/[locale]/dashboard/UserNav";
 
 export function AuthHeader() {
   const { data: session } = useSession();
@@ -48,9 +49,7 @@ export function AuthHeader() {
 
           {/* Auth buttons — desktop */}
           {session ? (
-            <Button variant="ghost" size="sm" className="hidden rounded-full sm:flex" onClick={handleSignOut}>
-              {t("signOut")}
-            </Button>
+            <DashboardUserNav />
           ) : (
             <>
               <Link href="/sign-in">

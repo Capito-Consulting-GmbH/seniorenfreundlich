@@ -92,6 +92,13 @@ export const companies = pgTable(
     postalCode: text("postal_code"),
     country: text("country").default("DE"),
     logoUrl: text("logo_url"),
+    // ─── registration / verification ──────────────────────────────────────────
+    hrbNumber: text("hrb_number"),
+    verificationStatus: text("verification_status").default("unverified").notNull(),
+    verificationToken: text("verification_token"),
+    verificationTokenExpiresAt: timestamp("verification_token_expires_at"),
+    verificationAttempts: integer("verification_attempts").default(0).notNull(),
+    verifiedAt: timestamp("verified_at"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
