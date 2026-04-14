@@ -28,7 +28,7 @@ export function VerificationBanner({ title, description, cta }: Props) {
             <p className="text-sm text-amber-800/80 dark:text-amber-300/80">{description}</p>
           </div>
         </div>
-        <Button asChild size="sm" variant="outline" className="shrink-0 border-amber-600/40 text-amber-900 hover:bg-amber-100 dark:text-amber-200 dark:hover:bg-amber-900/40">
+        <Button asChild size="sm" variant="outline" className="shrink-0 border-amber-600/40 bg-transparent text-amber-900 hover:bg-amber-100 dark:border-amber-400/60 dark:bg-amber-950/30 dark:text-amber-200 dark:hover:bg-amber-900/50">
           <Link href="/dashboard/onboarding">{cta}</Link>
         </Button>
       </div>
