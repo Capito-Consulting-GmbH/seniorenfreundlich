@@ -15,7 +15,6 @@ type Props = {
   labels: {
     overview: string;
     profile: string;
-    billing: string;
     badge: string;
     directory: string;
     menu: string;
@@ -28,7 +27,6 @@ export function DashboardNav({ labels }: Props) {
   const navLinks = [
     { href: "/dashboard", label: labels.overview },
     { href: "/dashboard/profile", label: labels.profile },
-    { href: "/dashboard/billing", label: labels.billing },
     { href: "/dashboard/badge", label: labels.badge },
   ];
 

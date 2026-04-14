@@ -130,7 +130,6 @@
     "nav": {
       "overview": "Overview",
       "profile": "Profile",
-      "billing": "Billing",
       "badge": "Badge",
       "directory": "Company Directory",
       "menu": "Navigation menu"
@@ -139,10 +138,8 @@
       "welcome": "Welcome, {name}",
       "profileTitle": "Profile",
       "profileDesc": "Edit company details",
-      "billingTitle": "Billing",
-      "billingDesc": "Buy badge & payments",
       "badgeTitle": "Badge",
-      "badgeDesc": "Manage & embed badge"
+      "badgeDesc": "Buy & manage your seal"
     },
     "onboarding": {
       "step1Label": "Account created",

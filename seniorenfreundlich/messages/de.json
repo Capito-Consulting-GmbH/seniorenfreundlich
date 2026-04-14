@@ -130,7 +130,6 @@
     "nav": {
       "overview": "Übersicht",
       "profile": "Profil",
-      "billing": "Abrechnung",
       "badge": "Siegel",
       "directory": "Unternehmensverzeichnis",
       "menu": "Navigationsmenü"
@@ -139,10 +138,8 @@
       "welcome": "Willkommen, {name}",
       "profileTitle": "Profil",
       "profileDesc": "Unternehmensdaten bearbeiten",
-      "billingTitle": "Abrechnung",
-      "billingDesc": "Siegel kaufen & Zahlungen",
       "badgeTitle": "Siegel",
-      "badgeDesc": "Siegel verwalten & einbetten"
+      "badgeDesc": "Siegel kaufen & verwalten"
     },
     "onboarding": {
       "step1Label": "Konto erstellt",

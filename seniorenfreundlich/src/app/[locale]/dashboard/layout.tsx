@@ -29,7 +29,6 @@ export default async function DashboardLayout({ children, params }: Props) {
         labels={{
           overview: t("nav.overview"),
           profile: t("nav.profile"),
-          billing: t("nav.billing"),
           badge: t("nav.badge"),
           directory: t("nav.directory"),
           menu: t("nav.menu"),
