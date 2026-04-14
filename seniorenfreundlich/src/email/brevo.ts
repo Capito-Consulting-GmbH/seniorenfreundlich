@@ -8,6 +8,12 @@ type BadgeIssuedEmailArgs = {
   companySlug: string;
 };
 
+type VerificationCodeEmailArgs = {
+  toEmail: string;
+  companyName: string;
+  code: string;
+};
+
 const defaultSender = {
   email: "no-reply@seniorenfreundlich.de",
   name: "Seniorenfreundlich",
@@ -36,6 +42,30 @@ export async function sendBadgeIssuedEmail({
         <p>Zertifikat: <a href="${certificateUrl}">${certificateUrl}</a></p>
         <p>Embed-Code und Verwaltung: <a href="${dashboardUrl}">${dashboardUrl}</a></p>
         <p>Viele Gruesse<br/>Seniorenfreundlich.de</p>
+      `,
+    });
+  } catch (error) {
+    Sentry.captureException(error);
+  }
+}
+
+export async function sendVerificationCodeEmail({
+  toEmail,
+  companyName,
+  code,
+}: VerificationCodeEmailArgs): Promise<void> {
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      sender: defaultSender,
+      to: [{ email: toEmail }],
+      subject: "Ihr Bestätigungscode für Seniorenfreundlich",
+      htmlContent: `
+        <p>Hallo ${companyName},</p>
+        <p>Ihr Bestätigungscode lautet:</p>
+        <p style="font-size:2rem;font-weight:bold;letter-spacing:0.3em;margin:16px 0;">${code}</p>
+        <p>Der Code ist <strong>1 Stunde</strong> gültig.</p>
+        <p>Falls Sie keine Registrierung bei Seniorenfreundlich.de vorgenommen haben, ignorieren Sie diese E-Mail bitte.</p>
+        <p>Viele Grüße<br/>Seniorenfreundlich.de</p>
       `,
     });
   } catch (error) {

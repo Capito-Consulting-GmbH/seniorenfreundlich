@@ -15,6 +15,13 @@
       "when": 1776120339084,
       "tag": "0001_brown_roland_deschain",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776123340580,
+      "tag": "0002_overjoyed_the_watchers",
+      "breakpoints": true
     }
   ]
 }
