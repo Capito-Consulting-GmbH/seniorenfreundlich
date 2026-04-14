@@ -9,7 +9,6 @@ import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { Alert, AlertDescription } from "@/src/components/ui/alert";
-import { env } from "@/src/env";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth");
@@ -17,6 +16,8 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? (typeof window !== "undefined" ? window.location.origin : "");
+  const resetRedirectUrl = appUrl ? `${appUrl.replace(/\/$/, "")}/reset-password` : "/reset-password";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,7 +27,7 @@ export default function ForgotPasswordPage() {
     // to prevent user enumeration (OWASP best practice).
     await requestPasswordReset({
       email,
-      redirectTo: `${env.NEXT_PUBLIC_APP_URL}/reset-password`,
+      redirectTo: resetRedirectUrl,
     });
 
     setLoading(false);
