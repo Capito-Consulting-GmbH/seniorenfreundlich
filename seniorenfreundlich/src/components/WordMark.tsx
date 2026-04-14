@@ -1,10 +1,12 @@
+import { Link } from "@/src/i18n/navigation";
+
 export function WordMark() {
   return (
-    <a
+    <Link
       href="/"
-      className="text-sm font-semibold text-zinc-900 hover:text-zinc-600"
+      className="text-sm font-semibold text-foreground hover:text-muted-foreground transition-colors"
     >
       Seniorenfreundlich.de
-    </a>
+    </Link>
   );
 }

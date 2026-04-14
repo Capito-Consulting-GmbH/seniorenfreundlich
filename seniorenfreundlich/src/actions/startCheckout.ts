@@ -19,9 +19,13 @@ export async function startCheckoutAction(): Promise<void> {
     redirect("/dashboard/onboarding");
   }
 
+  if (company.verificationStatus !== "verified") {
+    redirect("/dashboard/badge?error=not-verified");
+  }
+
   const activeBadge = await getActiveBadgeForCompany(company.id);
   if (activeBadge) {
-    redirect("/dashboard/billing?error=badge-active");
+    redirect("/dashboard/badge?error=badge-active");
   }
 
   const payment = await createMolliePayment({
@@ -41,7 +45,7 @@ export async function startCheckoutAction(): Promise<void> {
     entityType: "order",
     entityId: payment.id,
     action: "checkout_started",
-    actorId: company.ownerClerkUserId,
+    actorId: company.ownerUserId,
     metadata: {
       molliePaymentId: payment.id,
       amount: 9900,
@@ -51,7 +55,7 @@ export async function startCheckoutAction(): Promise<void> {
 
   const checkoutUrl = payment.getCheckoutUrl();
   if (!checkoutUrl) {
-    redirect("/dashboard/billing?error=no-checkout-url");
+    redirect("/dashboard/badge?error=no-checkout-url");
   }
 
   redirect(checkoutUrl);

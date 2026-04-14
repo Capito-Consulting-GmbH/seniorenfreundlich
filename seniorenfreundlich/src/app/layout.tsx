@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import { CookiebotScript } from "@/src/components/CookiebotScript";
+import { ThemeProvider } from "@/src/components/ThemeProvider";
 import "./globals.css";
 import "@/src/env";
 import { env } from "@/src/env";
@@ -26,35 +29,30 @@ export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   const cookiebotId = env.NEXT_PUBLIC_COOKIEBOT_ID;
   const gaMeasurementId = env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   return (
-    <html lang="de">
-      <head>
-        {/* Cookiebot — consent management (plain script required; next/script beforeInteractive not supported in App Router) */}
-        {cookiebotId && (
-          <script
-            id="cookiebot"
-            src="https://consent.cookiebot.com/uc.js"
-            data-cbid={cookiebotId}
-            data-blockingmode="auto"
-            type="text/javascript"
-            async
-          />
-        )}
-      </head>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <ClerkProvider dynamic>
-          {children}
-        </ClerkProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              {children}
+            </NextIntlClientProvider>
+        </ThemeProvider>
+
+        {/* Cookiebot — loaded after hydration to prevent React mismatch */}
+        {cookiebotId && <CookiebotScript cbid={cookiebotId} />}
 
         {/* GA4 — only injected when ID is present; Cookiebot controls consent */}
         {gaMeasurementId && (

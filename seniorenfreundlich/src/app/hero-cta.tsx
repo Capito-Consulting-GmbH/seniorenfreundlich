@@ -1,26 +1,25 @@
 "use client";
 
-import { useAuth, SignUpButton } from "@clerk/nextjs";
+import { useSession } from "@/src/lib/auth-client";
+import { useTranslations } from "next-intl";
+import { Link } from "@/src/i18n/navigation";
+import { Button } from "@/src/components/ui/button";
 
 export function HeroCta() {
-  const { isSignedIn } = useAuth();
+  const { data: session } = useSession();
+  const t = useTranslations("home");
 
-  if (isSignedIn) {
+  if (session) {
     return (
-      <a
-        href="/dashboard"
-        className="rounded-full bg-zinc-900 px-8 py-3 text-sm font-semibold text-white hover:bg-zinc-700"
-      >
-        Zum Dashboard
-      </a>
+      <Button size="lg" className="rounded-full" asChild>
+        <Link href="/dashboard">{t("ctaDashboard")}</Link>
+      </Button>
     );
   }
 
   return (
-    <SignUpButton forceRedirectUrl="/dashboard">
-      <button className="rounded-full bg-zinc-900 px-8 py-3 text-sm font-semibold text-white hover:bg-zinc-700">
-        Jetzt registrieren
-      </button>
-    </SignUpButton>
+    <Button size="lg" className="rounded-full" asChild>
+      <Link href="/sign-up">{t("cta")}</Link>
+    </Button>
   );
 }

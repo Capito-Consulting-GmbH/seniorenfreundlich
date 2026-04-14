@@ -16,7 +16,7 @@ export async function createMolliePayment({
       value: "99.00",
     },
     description: `Seniorenfreundlich-Siegel fuer ${companyName}`,
-    redirectUrl: `${env.NEXT_PUBLIC_APP_URL}/dashboard/billing?checkout=returned`,
+    redirectUrl: `${env.NEXT_PUBLIC_APP_URL}/dashboard/badge?checkout=returned`,
     webhookUrl: env.MOLLIE_WEBHOOK_URL,
     metadata: {
       companyId,

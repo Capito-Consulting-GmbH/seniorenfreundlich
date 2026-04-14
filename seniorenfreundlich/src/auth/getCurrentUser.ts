@@ -1,14 +1,8 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/src/lib/auth";
+import { headers } from "next/headers";
 
 export async function getCurrentUser(): Promise<{ userId: string }> {
-  const { userId, isAuthenticated } = await auth();
-  if (!isAuthenticated) {
-    throw new Error("Unauthorized");
-  }
-
-  if (!userId) {
-    throw new Error("User ID not found");
-  }
-
-  return { userId };
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) throw new Error("Unauthorized");
+  return { userId: session.user.id };
 }

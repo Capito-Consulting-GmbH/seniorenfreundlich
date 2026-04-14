@@ -16,7 +16,8 @@
 		"vscode": {
 			"extensions": [
 				"kilocode.kilo-code",
-				"databricks.neon-local-connect"
+				"databricks.neon-local-connect",
+				"ms-vscode.vscode-speech"
 			]
 		}
 	}
