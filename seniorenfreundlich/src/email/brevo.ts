@@ -49,6 +49,61 @@ export async function sendBadgeIssuedEmail({
   }
 }
 
+type PasswordResetEmailArgs = {
+  toEmail: string;
+  resetUrl: string;
+};
+
+type EmailVerificationArgs = {
+  toEmail: string;
+  verifyUrl: string;
+};
+
+export async function sendEmailVerificationEmail({
+  toEmail,
+  verifyUrl,
+}: EmailVerificationArgs): Promise<void> {
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      sender: defaultSender,
+      to: [{ email: toEmail }],
+      subject: "E-Mail-Adresse bestätigen – Seniorenfreundlich",
+      htmlContent: `
+        <p>Hallo,</p>
+        <p>Bitte bestätigen Sie Ihre E-Mail-Adresse, indem Sie auf den folgenden Link klicken:</p>
+        <p><a href="${verifyUrl}" style="font-weight:bold;">E-Mail-Adresse bestätigen</a></p>
+        <p>Falls Sie diese Anfrage nicht gestellt haben, können Sie diese E-Mail ignorieren.</p>
+        <p>Viele Grüße<br/>Seniorenfreundlich.de</p>
+      `,
+    });
+  } catch (error) {
+    Sentry.captureException(error);
+  }
+}
+
+export async function sendPasswordResetEmail({
+  toEmail,
+  resetUrl,
+}: PasswordResetEmailArgs): Promise<void> {
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      sender: defaultSender,
+      to: [{ email: toEmail }],
+      subject: "Passwort zurücksetzen – Seniorenfreundlich",
+      htmlContent: `
+        <p>Hallo,</p>
+        <p>Sie haben eine Anfrage zum Zurücksetzen Ihres Passworts gestellt.</p>
+        <p><a href="${resetUrl}" style="font-weight:bold;">Passwort jetzt zurücksetzen</a></p>
+        <p>Dieser Link ist <strong>1 Stunde</strong> gültig.</p>
+        <p>Falls Sie diese Anfrage nicht gestellt haben, können Sie diese E-Mail ignorieren.</p>
+        <p>Viele Grüße<br/>Seniorenfreundlich.de</p>
+      `,
+    });
+  } catch (error) {
+    Sentry.captureException(error);
+  }
+}
+
 export async function sendVerificationCodeEmail({
   toEmail,
   companyName,

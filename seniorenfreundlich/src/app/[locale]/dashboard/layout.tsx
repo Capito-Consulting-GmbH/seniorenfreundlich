@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { DashboardNav } from "./DashboardNav";
-import { VerificationBanner } from "./VerificationBanner";
 import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
+import { VerificationBanner } from "./VerificationBanner";
 
 type Props = {
   children: React.ReactNode;
@@ -30,6 +30,7 @@ export default async function DashboardLayout({ children, params }: Props) {
           overview: t("nav.overview"),
           profile: t("nav.profile"),
           badge: t("nav.badge"),
+          security: t("nav.security"),
           directory: t("nav.directory"),
           menu: t("nav.menu"),
         }}

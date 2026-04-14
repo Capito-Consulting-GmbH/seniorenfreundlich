@@ -8,6 +8,15 @@ import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src/components/ui/card";
+import { Check, X } from "lucide-react";
+
+const PASSWORD_RULES = [
+  { key: "passwordReqMin" as const,     test: (p: string) => p.length >= 8 },
+  { key: "passwordReqUpper" as const,   test: (p: string) => /[A-Z]/.test(p) },
+  { key: "passwordReqLower" as const,   test: (p: string) => /[a-z]/.test(p) },
+  { key: "passwordReqNumber" as const,  test: (p: string) => /[0-9]/.test(p) },
+  { key: "passwordReqSpecial" as const, test: (p: string) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p) },
+];
 
 export default function SignUpPage() {
   const t = useTranslations("auth");
@@ -16,12 +25,23 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const ruleResults = PASSWORD_RULES.map((r) => ({ ...r, passed: r.test(password) }));
+  const passwordValid = ruleResults.every((r) => r.passed);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (!passwordValid) {
+      setPasswordTouched(true);
+      setError(t("passwordErrorWeak"));
+      return;
+    }
+
     setLoading(true);
 
     const { error: signUpError } = await signUp.email({
@@ -81,10 +101,28 @@ export default function SignUpPage() {
                 placeholder={t("passwordPlaceholder")}
                 autoComplete="new-password"
                 required
-                minLength={8}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordTouched(true);
+                }}
               />
+              {passwordTouched && (
+                <ul className="mt-2 space-y-1">
+                  {ruleResults.map((r) => (
+                    <li key={r.key} className="flex items-center gap-1.5 text-xs">
+                      {r.passed ? (
+                        <Check className="h-3.5 w-3.5 text-green-600 shrink-0" />
+                      ) : (
+                        <X className="h-3.5 w-3.5 text-destructive shrink-0" />
+                      )}
+                      <span className={r.passed ? "text-muted-foreground" : "text-destructive"}>
+                        {t(r.key)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             {error && (

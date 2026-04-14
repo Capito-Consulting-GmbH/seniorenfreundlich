@@ -47,7 +47,8 @@ export default async function BadgePage({
         molliePayment.status !== "open" &&
         molliePayment.status !== "canceled";
     } catch {
-      showPaymentPoller = true;
+      // Mollie API unreachable — do NOT show poller; user may not have purchased
+      showPaymentPoller = false;
     }
   }
 

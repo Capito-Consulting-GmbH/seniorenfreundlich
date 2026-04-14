@@ -16,6 +16,7 @@ type Props = {
     overview: string;
     profile: string;
     badge: string;
+    security: string;
     directory: string;
     menu: string;
   };
@@ -28,6 +29,7 @@ export function DashboardNav({ labels }: Props) {
     { href: "/dashboard", label: labels.overview },
     { href: "/dashboard/profile", label: labels.profile },
     { href: "/dashboard/badge", label: labels.badge },
+    { href: "/dashboard/security", label: labels.security },
   ];
 
   return (

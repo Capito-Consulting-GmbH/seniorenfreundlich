@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "@/src/i18n/navigation";
+import { useRouter, Link } from "@/src/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useSession, signOut } from "@/src/lib/auth-client";
 import {
@@ -53,6 +53,10 @@ export function DashboardUserNav() {
             <DropdownMenuSeparator />
           </>
         )}
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href="/dashboard/security">{t("account")}</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
           {t("signOut")}
         </DropdownMenuItem>
