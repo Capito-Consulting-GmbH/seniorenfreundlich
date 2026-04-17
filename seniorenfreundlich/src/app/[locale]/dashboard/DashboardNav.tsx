@@ -12,6 +12,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
+  isAdmin?: boolean;
   labels: {
     overview: string;
     profile: string;
@@ -22,7 +23,7 @@ type Props = {
   };
 };
 
-export function DashboardNav({ labels }: Props) {
+export function DashboardNav({ labels, isAdmin }: Props) {
   const [open, setOpen] = useState(false);
 
   const navLinks = [
@@ -59,6 +60,14 @@ export function DashboardNav({ labels }: Props) {
           >
             {labels.directory}
           </Link>
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="hidden md:inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium text-primary hover:bg-accent transition-colors"
+            >
+              Admin
+            </Link>
+          )}
           <LocaleSwitcher />
           <ThemeToggle />
           <DashboardUserNav />
@@ -91,6 +100,15 @@ export function DashboardNav({ labels }: Props) {
                 >
                   {labels.directory}
                 </Link>
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setOpen(false)}
+                    className="rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-accent"
+                  >
+                    Admin
+                  </Link>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

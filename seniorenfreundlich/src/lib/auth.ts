@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin } from "better-auth/plugins";
 import { db } from "@/src/db/db";
 import { sendPasswordResetEmail, sendEmailVerificationEmail } from "@/src/email/brevo";
 
@@ -20,4 +21,5 @@ export const auth = betterAuth({
       void sendEmailVerificationEmail({ toEmail: user.email, verifyUrl: url });
     },
   },
+  plugins: [admin()],
 });

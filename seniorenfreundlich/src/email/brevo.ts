@@ -15,7 +15,7 @@ type VerificationCodeEmailArgs = {
 };
 
 const defaultSender = {
-  email: "no-reply@seniorenfreundlich.de",
+  email: "no-reply@seniorenfreundlich.org",
   name: "Seniorenfreundlich",
 };
 
@@ -41,7 +41,7 @@ export async function sendBadgeIssuedEmail({
         <p>Ihr Seniorenfreundlich-Siegel wurde erfolgreich aktiviert.</p>
         <p>Zertifikat: <a href="${certificateUrl}">${certificateUrl}</a></p>
         <p>Embed-Code und Verwaltung: <a href="${dashboardUrl}">${dashboardUrl}</a></p>
-        <p>Viele Gruesse<br/>Seniorenfreundlich.de</p>
+        <p>Viele Gruesse<br/>Seniorenfreundlich.org</p>
       `,
     });
   } catch (error) {
@@ -73,7 +73,7 @@ export async function sendEmailVerificationEmail({
         <p>Bitte bestätigen Sie Ihre E-Mail-Adresse, indem Sie auf den folgenden Link klicken:</p>
         <p><a href="${verifyUrl}" style="font-weight:bold;">E-Mail-Adresse bestätigen</a></p>
         <p>Falls Sie diese Anfrage nicht gestellt haben, können Sie diese E-Mail ignorieren.</p>
-        <p>Viele Grüße<br/>Seniorenfreundlich.de</p>
+        <p>Viele Grüße<br/>Seniorenfreundlich.org</p>
       `,
     });
   } catch (error) {
@@ -96,7 +96,7 @@ export async function sendPasswordResetEmail({
         <p><a href="${resetUrl}" style="font-weight:bold;">Passwort jetzt zurücksetzen</a></p>
         <p>Dieser Link ist <strong>1 Stunde</strong> gültig.</p>
         <p>Falls Sie diese Anfrage nicht gestellt haben, können Sie diese E-Mail ignorieren.</p>
-        <p>Viele Grüße<br/>Seniorenfreundlich.de</p>
+        <p>Viele Grüße<br/>Seniorenfreundlich.org</p>
       `,
     });
   } catch (error) {
@@ -119,8 +119,8 @@ export async function sendVerificationCodeEmail({
         <p>Ihr Bestätigungscode lautet:</p>
         <p style="font-size:2rem;font-weight:bold;letter-spacing:0.3em;margin:16px 0;">${code}</p>
         <p>Der Code ist <strong>1 Stunde</strong> gültig.</p>
-        <p>Falls Sie keine Registrierung bei Seniorenfreundlich.de vorgenommen haben, ignorieren Sie diese E-Mail bitte.</p>
-        <p>Viele Grüße<br/>Seniorenfreundlich.de</p>
+        <p>Falls Sie keine Registrierung bei Seniorenfreundlich.org vorgenommen haben, ignorieren Sie diese E-Mail bitte.</p>
+        <p>Viele Grüße<br/>Seniorenfreundlich.org</p>
       `,
     });
   } catch (error) {

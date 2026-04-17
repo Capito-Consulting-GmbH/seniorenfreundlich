@@ -6,11 +6,11 @@ export async function GET() {
     "@context": "https://w3id.org/openbadges/v2",
     type: "Issuer",
     id: `${env.NEXT_PUBLIC_APP_URL}/api/openbadges/issuer`,
-    name: "Seniorenfreundlich.de",
+    name: "Seniorenfreundlich.org",
     url: env.NEXT_PUBLIC_APP_URL,
-    email: "info@seniorenfreundlich.de",
+    email: "info@seniorenfreundlich.org",
     description:
-      "Seniorenfreundlich.de zertifiziert Unternehmen, die besondere Rücksicht auf die Bedürfnisse älterer Menschen nehmen.",
+      "Seniorenfreundlich.org zertifiziert Unternehmen, die besondere Rücksicht auf die Bedürfnisse älterer Menschen nehmen.",
   };
 
   return NextResponse.json(issuer, {

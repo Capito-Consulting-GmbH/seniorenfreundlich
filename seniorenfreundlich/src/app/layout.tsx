@@ -21,8 +21,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Seniorenfreundlich.de – Das Siegel für seniorenfreundliche Unternehmen",
-    template: "%s | Seniorenfreundlich.de",
+    default: "Seniorenfreundlich.org – Das Siegel für seniorenfreundliche Unternehmen",
+    template: "%s | Seniorenfreundlich.org",
   },
   description:
     "Zertifizierung für Unternehmen, die besondere Rücksicht auf die Bedürfnisse älterer Menschen nehmen.",

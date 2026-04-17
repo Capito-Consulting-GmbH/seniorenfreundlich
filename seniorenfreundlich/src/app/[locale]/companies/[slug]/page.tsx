@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const company = await getCompanyBySlug(slug);
   if (!company) return {};
   return {
-    title: `${company.name} | Seniorenfreundlich.de`,
+    title: `${company.name} | Seniorenfreundlich.org`,
     description:
       company.description ??
       `${company.name} – ein seniorenfreundliches Unternehmen.`,
@@ -160,7 +160,7 @@ export default async function CompanyProfilePage({ params }: Props) {
       </main>
 
       <footer className="mt-16 border-t px-6 py-6 text-center text-xs text-muted-foreground">
-        <p>© {new Date().getFullYear()} Seniorenfreundlich.de</p>
+        <p>© {new Date().getFullYear()} Seniorenfreundlich.org</p>
         <nav className="mt-2 flex justify-center gap-4">
           <Link href="/imprint" className="hover:text-foreground transition-colors">{tFooter("imprint")}</Link>
           <Link href="/privacy" className="hover:text-foreground transition-colors">{tFooter("privacy")}</Link>

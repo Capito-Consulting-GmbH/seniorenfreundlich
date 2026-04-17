@@ -21,6 +21,11 @@ export const user = pgTable("user", {
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
+  // better-auth admin plugin
+  role: text("role").default("user"),
+  banned: boolean("banned").default(false),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
 });
 
 export const session = pgTable("session", {
@@ -34,6 +39,8 @@ export const session = pgTable("session", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  // better-auth admin plugin
+  impersonatedBy: text("impersonated_by"),
 });
 
 export const account = pgTable("account", {
@@ -82,7 +89,7 @@ export const companies = pgTable(
     name: text("name").notNull(),
     slug: text("slug").notNull(),
     ownerUserId: text("owner_user_id").notNull(),
-    // [domain] fields — seniorenfreundlich.de specific
+    // [domain] fields — seniorenfreundlich.org specific
     description: text("description"),
     website: text("website"),
     phone: text("phone"),
