@@ -385,6 +385,7 @@
       "searchPlaceholder": "Unternehmen, Mollie-ID…",
       "search": "Suchen",
       "clear": "Zurücksetzen",
+      "all": "Alle",
       "colId": "Bestell-ID",
       "colCompany": "Unternehmen",
       "colAmount": "Betrag",
@@ -555,7 +556,11 @@
       "confirmTextLabel": "Zur Bestätigung \"delete\" eingeben",
       "total": "{count} gesamt",
       "filter": "Filter",
-      "noEventsYet": "Noch keine Ereignisse."
+      "noEventsYet": "Noch keine Ereignisse.",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "pageOf": "Seite {page} von {pages}",
+      "rangeOf": "{from}–{to} von {total}"
     }
   }
 }

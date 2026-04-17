@@ -77,7 +77,7 @@ export default async function AdminOrdersPage({
 
         <div className="flex gap-1">
           <Link href={statusHref(null)}>
-            <Badge variant={!statusFilter ? "default" : "outline"} className="cursor-pointer">All</Badge>
+            <Badge variant={!statusFilter ? "default" : "outline"} className="cursor-pointer">{t("all")}</Badge>
           </Link>
           {statusFilters.map((s) => (
             <Link key={s} href={statusHref(statusFilter === s ? null : s)}>
