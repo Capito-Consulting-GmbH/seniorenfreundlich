@@ -14,7 +14,7 @@ export async function GET() {
     image: `${base}/badge.png`,
     criteria: {
       narrative:
-        "Das Unternehmen hat die Kriterien für das Seniorenfreundlich-Siegel erfüllt und wurde durch Seniorenfreundlich.de geprüft und zertifiziert.",
+        "Das Unternehmen hat die Kriterien für das Seniorenfreundlich-Siegel erfüllt und wurde durch Seniorenfreundlich.org geprüft und zertifiziert.",
     },
     issuer: `${base}/api/openbadges/issuer`,
   };

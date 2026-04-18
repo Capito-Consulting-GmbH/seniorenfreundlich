@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { DashboardNav } from "./DashboardNav";
 import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
+import { getCurrentUser } from "@/src/auth/getCurrentUser";
 import { VerificationBanner } from "./VerificationBanner";
 
 type Props = {
@@ -15,10 +16,15 @@ export default async function DashboardLayout({ children, params }: Props) {
 
   // Attempt to load company — may be null when not authenticated (edge case)
   let showVerificationBanner = false;
+  let isAdmin = false;
   try {
-    const company = await getCurrentCompany();
+    const [company, user] = await Promise.all([
+      getCurrentCompany(),
+      getCurrentUser(),
+    ]);
     showVerificationBanner =
       !!company && company.verificationStatus !== "verified";
+    isAdmin = user.role === "admin";
   } catch {
     // unauthenticated or DB error — skip banner
   }
@@ -26,6 +32,7 @@ export default async function DashboardLayout({ children, params }: Props) {
   return (
     <div className="min-h-screen">
       <DashboardNav
+        isAdmin={isAdmin}
         labels={{
           overview: t("nav.overview"),
           profile: t("nav.profile"),

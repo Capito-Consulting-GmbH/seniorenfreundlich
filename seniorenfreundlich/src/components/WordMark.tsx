@@ -6,7 +6,7 @@ export function WordMark() {
       href="/"
       className="text-sm font-semibold text-foreground hover:text-muted-foreground transition-colors"
     >
-      Seniorenfreundlich.de
+      Seniorenfreundlich.org
     </Link>
   );
 }
