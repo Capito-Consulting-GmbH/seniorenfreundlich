@@ -6,14 +6,31 @@ export type Badge = typeof badges.$inferSelect;
 export type NewBadge = typeof badges.$inferInsert;
 
 export async function getActiveBadgeForCompany(
-  companyId: string
+  companyId: string,
+  tier?: "basic" | "standard" | "premium"
 ): Promise<Badge | null> {
   const result = await db
     .select()
     .from(badges)
-    .where(and(eq(badges.companyId, companyId), eq(badges.status, "active")))
+    .where(
+      and(
+        eq(badges.companyId, companyId),
+        eq(badges.status, "active"),
+        tier ? eq(badges.tier, tier) : undefined
+      )
+    )
     .limit(1);
   return result[0] ?? null;
+}
+
+export async function getBadgesForCompany(
+  companyId: string
+): Promise<Badge[]> {
+  return db
+    .select()
+    .from(badges)
+    .where(eq(badges.companyId, companyId))
+    .orderBy(desc(badges.issuedAt));
 }
 
 export async function getBadgeByAssertionId(
@@ -27,8 +44,11 @@ export async function getBadgeByAssertionId(
   return result[0] ?? null;
 }
 
-export async function createBadge(companyId: string): Promise<Badge> {
-  const [badge] = await db.insert(badges).values({ companyId }).returning();
+export async function createBadge(
+  companyId: string,
+  tier: "basic" | "standard" | "premium" = "basic"
+): Promise<Badge> {
+  const [badge] = await db.insert(badges).values({ companyId, tier }).returning();
   return badge;
 }
 

@@ -20,6 +20,7 @@ type Props = {
     security: string;
     directory: string;
     menu: string;
+    assessment: string;
   };
 };
 
@@ -30,6 +31,7 @@ export function DashboardNav({ labels, isAdmin }: Props) {
     { href: "/dashboard", label: labels.overview },
     { href: "/dashboard/profile", label: labels.profile },
     { href: "/dashboard/badge", label: labels.badge },
+    { href: "/dashboard/assessment", label: labels.assessment },
     { href: "/dashboard/security", label: labels.security },
   ];
 

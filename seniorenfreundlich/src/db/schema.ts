@@ -10,6 +10,7 @@ import {
   index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
 
 // ─── better-auth core tables ─────────────────────────────────────────────────
 
@@ -82,6 +83,8 @@ export const orderStatusEnum = pgEnum("order_status", [
 
 export const badgeStatusEnum = pgEnum("badge_status", ["active", "revoked"]);
 
+export const tierEnum = pgEnum("tier", ["basic", "standard", "premium"]);
+
 export const companies = pgTable(
   "companies",
   {
@@ -106,6 +109,7 @@ export const companies = pgTable(
     verificationTokenExpiresAt: timestamp("verification_token_expires_at"),
     verificationAttempts: integer("verification_attempts").default(0).notNull(),
     verifiedAt: timestamp("verified_at"),
+    pendingMolliePaymentId: text("pending_mollie_payment_id"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -127,6 +131,7 @@ export const orders = pgTable(
     amount: integer("amount").notNull(), // stored in cents, e.g. 9900 = 99.00 EUR
     currency: text("currency").notNull().default("EUR"),
     status: orderStatusEnum("status").notNull().default("pending"),
+    tier: tierEnum("tier").notNull().default("basic"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -142,6 +147,7 @@ export const badges = pgTable(
       .references(() => companies.id),
     assertionId: uuid("assertion_id").notNull().defaultRandom(),
     status: badgeStatusEnum("status").notNull().default("active"),
+    tier: tierEnum("tier").notNull().default("basic"),
     issuedAt: timestamp("issued_at").defaultNow().notNull(),
     revokedAt: timestamp("revoked_at"),
   },
@@ -163,4 +169,143 @@ export const auditEvents = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (t) => [index("audit_events_entity_idx").on(t.entityId)]
+);
+
+// ─── Assessment tables ────────────────────────────────────────────────────────
+
+export const assessmentConfigStatusEnum = pgEnum("assessment_config_status", [
+  "draft",
+  "active",
+  "archived",
+]);
+
+export const assessmentSubmissionStatusEnum = pgEnum(
+  "assessment_submission_status",
+  ["draft", "submitted", "under_review", "approved", "rejected"]
+);
+
+export const assessmentConfigs = pgTable(
+  "assessment_configs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    version: integer("version").notNull().unique(),
+    status: assessmentConfigStatusEnum("status").notNull().default("draft"),
+    tier: tierEnum("tier").notNull().default("basic"),
+    title: jsonb("title").notNull().$type<{ de: string; en: string }>(),
+    config: jsonb("config").notNull().$type<Record<string, unknown>>(),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => user.id),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("assessment_configs_status_idx").on(t.status),
+    index("assessment_configs_tier_idx").on(t.tier),
+    uniqueIndex("assessment_configs_active_tier_idx")
+      .on(t.tier)
+      .where(sql`status = 'active'`),
+  ]
+);
+
+export const assessmentSubmissions = pgTable(
+  "assessment_submissions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id),
+    configId: uuid("config_id")
+      .notNull()
+      .references(() => assessmentConfigs.id),
+    status: assessmentSubmissionStatusEnum("status").notNull().default("draft"),
+    adminNotes: text("admin_notes"),
+    reviewedBy: text("reviewed_by").references(() => user.id),
+    reviewedAt: timestamp("reviewed_at"),
+    submittedAt: timestamp("submitted_at"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("assessment_submissions_company_idx").on(t.companyId),
+    index("assessment_submissions_config_idx").on(t.configId),
+    index("assessment_submissions_status_idx").on(t.status),
+  ]
+);
+
+export const assessmentAnswers = pgTable(
+  "assessment_answers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    submissionId: uuid("submission_id")
+      .notNull()
+      .references(() => assessmentSubmissions.id, { onDelete: "cascade" }),
+    questionId: text("question_id").notNull(),
+    value: jsonb("value").notNull().$type<Record<string, unknown>>(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("assessment_answers_submission_question_idx").on(
+      t.submissionId,
+      t.questionId
+    ),
+  ]
+);
+
+export const assessmentFiles = pgTable("assessment_files", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  answerId: uuid("answer_id")
+    .notNull()
+    .references(() => assessmentAnswers.id, { onDelete: "cascade" }),
+  blobUrl: text("blob_url").notNull(),
+  filename: text("filename").notNull(),
+  mimeType: text("mime_type").notNull(),
+  sizeBytes: integer("size_bytes").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// ─── Relations ────────────────────────────────────────────────────────────────
+
+export const assessmentConfigsRelations = relations(
+  assessmentConfigs,
+  ({ many }) => ({
+    submissions: many(assessmentSubmissions),
+  })
+);
+
+export const assessmentSubmissionsRelations = relations(
+  assessmentSubmissions,
+  ({ one, many }) => ({
+    config: one(assessmentConfigs, {
+      fields: [assessmentSubmissions.configId],
+      references: [assessmentConfigs.id],
+    }),
+    company: one(companies, {
+      fields: [assessmentSubmissions.companyId],
+      references: [companies.id],
+    }),
+    answers: many(assessmentAnswers),
+  })
+);
+
+export const assessmentAnswersRelations = relations(
+  assessmentAnswers,
+  ({ one, many }) => ({
+    submission: one(assessmentSubmissions, {
+      fields: [assessmentAnswers.submissionId],
+      references: [assessmentSubmissions.id],
+    }),
+    files: many(assessmentFiles),
+  })
+);
+
+export const assessmentFilesRelations = relations(
+  assessmentFiles,
+  ({ one }) => ({
+    answer: one(assessmentAnswers, {
+      fields: [assessmentFiles.answerId],
+      references: [assessmentAnswers.id],
+    }),
+  })
 );

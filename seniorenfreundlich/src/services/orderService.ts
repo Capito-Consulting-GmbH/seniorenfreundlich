@@ -1,4 +1,4 @@
-import { desc, eq, ilike, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
 import { db } from "@/src/db/db";
 import { companies, orders } from "@/src/db/schema";
 
@@ -7,6 +7,14 @@ export type NewOrder = typeof orders.$inferInsert;
 
 export async function createOrder(data: NewOrder): Promise<Order> {
   const [order] = await db.insert(orders).values(data).returning();
+  return order;
+}
+
+export async function createPaidOrder(data: Omit<NewOrder, "status">): Promise<Order> {
+  const [order] = await db
+    .insert(orders)
+    .values({ ...data, status: "paid" })
+    .returning();
   return order;
 }
 

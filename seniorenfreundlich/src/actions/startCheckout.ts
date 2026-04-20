@@ -1,13 +1,19 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { getCurrentCompany } from "@/src/auth/getCurrentCompany";
 import { createMolliePayment } from "@/src/mollie/createPayment";
-import { createOrder } from "@/src/services/orderService";
+import { db } from "@/src/db/db";
+import { companies } from "@/src/db/schema";
 import { getActiveBadgeForCompany } from "@/src/services/badgeService";
+import { getApprovedSubmissionByCompanyAndTier } from "@/src/services/assessmentSubmissionService";
+import { getActiveConfigByTier } from "@/src/services/assessmentConfigService";
 import { writeAuditEvent } from "@/src/services/auditService";
 
-export async function startCheckoutAction(): Promise<void> {
+export async function startCheckoutAction(
+  tier: "basic" | "standard" | "premium"
+): Promise<void> {
   let company = null;
   try {
     company = await getCurrentCompany();
@@ -20,36 +26,49 @@ export async function startCheckoutAction(): Promise<void> {
   }
 
   if (company.verificationStatus !== "verified") {
-    redirect("/dashboard/badge?error=not-verified");
+    redirect(`/dashboard/badge?error=not-verified`);
   }
 
-  const activeBadge = await getActiveBadgeForCompany(company.id);
+  const activeBadge = await getActiveBadgeForCompany(company.id, tier);
   if (activeBadge) {
-    redirect("/dashboard/badge?error=badge-active");
+    redirect(`/dashboard/badge?error=badge-active&tier=${tier}`);
   }
 
+  // Require an approved assessment for this tier's active config
+  const activeConfig = await getActiveConfigByTier(tier);
+  if (!activeConfig) {
+    redirect(`/dashboard/badge?error=no-config&tier=${tier}`);
+  }
+
+  const approvedSubmission = await getApprovedSubmissionByCompanyAndTier(
+    company.id,
+    tier
+  );
+  if (!approvedSubmission) {
+    redirect(`/dashboard/badge?error=no-approved-assessment&tier=${tier}`);
+  }
+
+  // Create Mollie payment only — do NOT create a DB order yet (deferred)
   const payment = await createMolliePayment({
     companyId: company.id,
     companyName: company.name,
+    tier,
   });
 
-  await createOrder({
-    companyId: company.id,
-    molliePaymentId: payment.id,
-    amount: 9900,
-    currency: "EUR",
-    status: "pending",
-  });
+  // Store the pending payment ID on the company record so the poller can track it
+  await db
+    .update(companies)
+    .set({ pendingMolliePaymentId: payment.id, updatedAt: new Date() })
+    .where(eq(companies.id, company.id));
 
   await writeAuditEvent({
-    entityType: "order",
-    entityId: payment.id,
-    action: "checkout_started",
+    entityType: "company",
+    entityId: company.id,
+    action: "checkout_initiated",
     actorId: company.ownerUserId,
     metadata: {
       molliePaymentId: payment.id,
-      amount: 9900,
-      currency: "EUR",
+      tier,
     },
   });
 
@@ -60,3 +79,5 @@ export async function startCheckoutAction(): Promise<void> {
 
   redirect(checkoutUrl);
 }
+
+

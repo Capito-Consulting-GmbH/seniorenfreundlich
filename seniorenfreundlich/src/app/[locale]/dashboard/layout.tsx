@@ -40,6 +40,7 @@ export default async function DashboardLayout({ children, params }: Props) {
           security: t("nav.security"),
           directory: t("nav.directory"),
           menu: t("nav.menu"),
+          assessment: t("nav.assessment"),
         }}
       />
       {showVerificationBanner && (
