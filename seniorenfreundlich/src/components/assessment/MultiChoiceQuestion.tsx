@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 import type { AnswerValue, MultiChoiceAnswer } from "@/src/validators/assessment";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { Label } from "@/src/components/ui/label";
@@ -23,6 +25,7 @@ interface Props {
 }
 
 export function MultiChoiceQuestion({ question, value, onChange, locale, disabled }: Props) {
+  const baseId = useId();
   const selected = value ?? [];
 
   function toggle(optValue: string) {
@@ -35,19 +38,22 @@ export function MultiChoiceQuestion({ question, value, onChange, locale, disable
 
   return (
     <div className="space-y-2">
-      {question.options.map((opt) => (
-        <div key={opt.value} className="flex items-center space-x-2">
+      {question.options.map((opt, idx) => {
+        const optionId = `${baseId}-${idx}`;
+
+        return (
+        <div key={`${opt.value}:${idx}`} className="flex items-center space-x-2">
           <Checkbox
-            id={`mc-${opt.value}`}
+            id={optionId}
             checked={selected.includes(opt.value)}
             onCheckedChange={() => toggle(opt.value)}
             disabled={disabled}
           />
-          <Label htmlFor={`mc-${opt.value}`}>
+          <Label htmlFor={optionId}>
             {opt.label[locale] || opt.label.de}
           </Label>
         </div>
-      ))}
+      );})}
     </div>
   );
 }

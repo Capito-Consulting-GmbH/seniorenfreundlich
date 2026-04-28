@@ -5,6 +5,7 @@ import type { QuestionType } from "@/src/validators/assessment";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/src/components/ui/dialog";
@@ -54,6 +55,9 @@ export function QuestionTypePicker({ open, onClose, onSelect }: Props) {
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>{tBuilder("pickType")}</DialogTitle>
+          <DialogDescription>
+            {tBuilder("pickType")}.
+          </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-3 gap-3 py-2">
           {QUESTION_TYPES.map(({ type, Icon }) => (

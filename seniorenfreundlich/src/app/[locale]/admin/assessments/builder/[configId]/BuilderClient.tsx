@@ -16,6 +16,7 @@ import {
 import { SortableSectionList } from "@/src/components/admin/assessment-builder/SortableSectionList";
 import { BuilderToolbar } from "@/src/components/admin/assessment-builder/BuilderToolbar";
 import { AssessmentPreview } from "@/src/components/admin/assessment-builder/AssessmentPreview";
+import { AssessmentTestMode } from "@/src/components/admin/assessment-builder/AssessmentTestMode";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { Button } from "@/src/components/ui/button";
@@ -144,6 +145,7 @@ export function BuilderClient({
   const [isPending, startTransition] = useTransition();
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
   const [lang, setLang] = useState<"de" | "en">("de");
+  const [sidePanelMode, setSidePanelMode] = useState<"preview" | "test">("preview");
 
   const [state, dispatch] = useReducer(reducer, {
     config: initialConfig,
@@ -247,10 +249,35 @@ export function BuilderClient({
 
         {/* Preview (right ~40%) */}
         <div className="flex-1 overflow-y-auto bg-muted/20 p-6">
-          <h3 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wide">
-            {t("preview")}
-          </h3>
-          <AssessmentPreview config={state.config} locale={lang} />
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              {sidePanelMode === "preview" ? t("preview") : t("testMode")}
+            </h3>
+            <div className="flex rounded-md border overflow-hidden shrink-0 bg-background">
+              <Button
+                variant={sidePanelMode === "preview" ? "default" : "ghost"}
+                size="sm"
+                className="rounded-none h-8 px-3 text-xs font-semibold"
+                onClick={() => setSidePanelMode("preview")}
+              >
+                {t("preview")}
+              </Button>
+              <Button
+                variant={sidePanelMode === "test" ? "default" : "ghost"}
+                size="sm"
+                className="rounded-none border-l h-8 px-3 text-xs font-semibold"
+                onClick={() => setSidePanelMode("test")}
+              >
+                {t("testMode")}
+              </Button>
+            </div>
+          </div>
+          <div className={sidePanelMode === "preview" ? "block" : "hidden"}>
+            <AssessmentPreview config={state.config} locale={lang} />
+          </div>
+          <div className={sidePanelMode === "test" ? "block" : "hidden"}>
+            <AssessmentTestMode config={state.config} locale={lang} />
+          </div>
         </div>
       </div>
     </div>

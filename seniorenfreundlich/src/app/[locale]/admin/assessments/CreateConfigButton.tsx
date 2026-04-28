@@ -7,6 +7,7 @@ import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -55,6 +56,7 @@ export function CreateConfigButton() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("newConfig")}</DialogTitle>
+            <DialogDescription>{t("tierLabel")}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
             <Label htmlFor="tier-select">{t("tierLabel")}</Label>

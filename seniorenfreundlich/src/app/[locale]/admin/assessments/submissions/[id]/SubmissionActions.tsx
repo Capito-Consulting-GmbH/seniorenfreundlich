@@ -16,6 +16,7 @@ import { Label } from "@/src/components/ui/label";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -110,8 +111,8 @@ export function SubmissionActions({ submission }: Props) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("abortReviewTitle")}</DialogTitle>
+            <DialogDescription>{t("abortReviewDesc")}</DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground">{t("abortReviewDesc")}</p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAbortDialogOpen(false)}>
               Abbrechen
@@ -128,8 +129,8 @@ export function SubmissionActions({ submission }: Props) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("approveTitle")}</DialogTitle>
+            <DialogDescription>{t("approveDesc")}</DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground">{t("approveDesc")}</p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setApproveDialogOpen(false)}>
               Abbrechen
@@ -146,8 +147,8 @@ export function SubmissionActions({ submission }: Props) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("rejectTitle")}</DialogTitle>
+            <DialogDescription>{t("rejectDesc")}</DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground mb-4">{t("rejectDesc")}</p>
           <div className="space-y-2">
             <Label>{t("notesLabel")}</Label>
             <Textarea

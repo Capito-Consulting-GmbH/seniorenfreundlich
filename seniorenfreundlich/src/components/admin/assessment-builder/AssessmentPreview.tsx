@@ -73,8 +73,8 @@ function QuestionPreview({
           )}
           {question.type === "single-choice" && (
             <div className="space-y-1">
-              {(question as { options: { value: string; label: { de: string; en: string } }[] }).options.map((opt) => (
-                <label key={opt.value} className="flex items-center gap-2 text-sm cursor-default">
+              {(question as { options: { value: string; label: { de: string; en: string } }[] }).options.map((opt, idx) => (
+                <label key={`${question.id}:${opt.value}:${idx}`} className="flex items-center gap-2 text-sm cursor-default">
                   <input type="radio" disabled /> {loc(opt.label, locale)}
                 </label>
               ))}
@@ -82,8 +82,8 @@ function QuestionPreview({
           )}
           {question.type === "multi-choice" && (
             <div className="space-y-1">
-              {(question as { options: { value: string; label: { de: string; en: string } }[] }).options.map((opt) => (
-                <label key={opt.value} className="flex items-center gap-2 text-sm cursor-default">
+              {(question as { options: { value: string; label: { de: string; en: string } }[] }).options.map((opt, idx) => (
+                <label key={`${question.id}:${opt.value}:${idx}`} className="flex items-center gap-2 text-sm cursor-default">
                   <input type="checkbox" disabled /> {loc(opt.label, locale)}
                 </label>
               ))}
